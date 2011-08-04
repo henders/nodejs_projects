@@ -1,0 +1,7 @@
+== mymvc ==
+
+A test project while I was learning javascript and nodejs, contains server app for TaskMaster android app.
+
+== taskmaster ==
+
+Same as above, but more filled out, and written using Express MVC
