@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/public/basestyle.css" />
+		<script lang=javascript>
+				window.onerror = function(msg, url, line) {
+						showMsg("Stupid Shane!\n" + 
+									  "'" + msg + "' URL:" + url + " line " + line);
+						return false;
+				}
+		</script>
+
+    <body>
+        <form action="/show" method="post" enctype="utf8">
+						<input type='button' value="Chore..." onClick="showChoreSelection();"/>
+						<input name="choreName" placeholder="selected chore will show here..." disabled="true">
+						<input type='button' value="Person..." onClick="onChooseTask();"/>
+						<input name="personName" placeholder="selected person will show here..." disabled="true">
+						<input type='button' value="Did It!" onClick="submit()"/>
+						<input type="button" value="Reload Page" onClick="window.location.reload()">
+        </form>
+				<div id="light" class="white_content">Hi, I am an happy lightbox</div>
+				<div id="fade" class="black_overlay" onClick="hideChoreSelection"></div>
+				<script lang=javascript>
+						function showMsg(msg) {
+								try {
+									Android.showToast(msg);
+								}
+								catch (e) {
+									alert(msg);
+								}
+						};
+
+						function showChoreSelection() {
+							document.getElementById('light').style.display='block';
+							document.getElementById('fade').style.display='block';
+						};
+						function hideChoreSelection() {
+							document.getElementById('light').style.display='none';
+							document.getElementById('fade').style.display='none';
+						};
+
+				</script>
+    </body>
+</html>
