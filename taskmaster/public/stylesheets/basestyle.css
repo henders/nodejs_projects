@@ -1,0 +1,49 @@
+@charset "utf-8";
+/* CSS Document */
+
+div {
+	height: 500px;
+	width: 300px;
+	border-style: solid;
+	border-color: #F90;
+	margin: 0px auto;
+	background-color: #FFC;
+	padding: 0px;
+}
+label {
+	clear: left;
+	float: left;
+	text-align: right;
+	width: 70px;
+	margin: 5px;
+}
+input {
+	width: 150px;
+	margin: 5px;
+}
+input.submit {
+	clear: both;
+	margin: 0px 100px;
+	
+	font: bold 11px arial,sans-serif;	
+	width:100px;
+	height:27px;
+	color: #ffffff;
+	padding: 5px 5px;
+	cursor:pointer;	
+	
+	background: -moz-linear-gradient(
+		top,
+		#3e9400 0%,
+		#3e9400);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#3e9400),
+		to(#3e9400));
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: 1px solid #28691d;
+	-moz-box-shadow:
+		0px 1px 3px rgba(255,255,255,0),
+		inset 0px 0px 1px rgba(255,255,255,0.4);
