@@ -1,0 +1,17 @@
+<div id="chores">
+	<% if (user) { %> <p>User: <%= user.email %> </p> <% } %>
+	<% if (error) { %> <p>Message: <%= error %> </p> <% } %>
+	<table id="chores">
+		<tr>
+			<th>Date:</th>
+			<th>Chore:</th>
+		</tr>
+		<% chores.forEach(function(chore) { %>
+			<tr>
+				<td><%= chore.done_date %></td>
+				<td><%= chore.type.name %></td>
+			</tr>
+		<% }) %>
+	</table>
+</div>
+

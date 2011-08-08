@@ -1,10 +1,11 @@
 {
     "name": "TaskServer"
-  , "version": "0.0.1"
+  , "version": "0.0.2"
   , "private": true
   , "dependencies": {
       "express": "2.4.3"
-    , "--sessions": ">= 0.0.1"
     , "ejs": ">= 0.0.1"
+		, "pg": ">=0.5.3"
+		, "FastLegS": ">=0.1.0"
   }
 }

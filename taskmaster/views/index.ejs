@@ -1,9 +1,8 @@
-	<div id="main">
-			<form action="/show" method="post" name="createTask">
-					<label for="choreName">Chore</label>
-					<input type="text" id="choreName" name="chore">
-					<label for="personName">Person</label>
-					<input type="text" id="personName" name="person" placeholder="Shane">
-					<input type="submit" class="submit" value="Do it!"/>
-			</form>
-	</div>
+<form action="/do_chore" method="post" name="createTask">
+	<label for="choreName">Chore</label>
+	<input type="text" id="choreName" name="chore">
+	<label for="personName">Person</label>
+	<input type="text" id="personName" name="person" placeholder="<%= user.name %>">
+	<input type="submit" class="submit" value="Do it!"/>
+</form>
+

@@ -1,8 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
 
-div {
-	height: 500px;
+div#main {
+	height: 450px;
 	width: 300px;
 	border-style: solid;
 	border-color: #F90;
@@ -47,3 +47,28 @@ input.submit {
 	-moz-box-shadow:
 		0px 1px 3px rgba(255,255,255,0),
 		inset 0px 0px 1px rgba(255,255,255,0.4);
+}
+
+div.logindiv {
+	margin: 100px auto;
+	width: 200px;
+	padding: 20px;
+	height: 100px;
+}
+div.logindiv input {
+	display: block;
+	margin: 20px auto;
+}
+
+table#chores {
+	border:dotted #009900;
+	width: 296px;
+	margin: 0 2px 0px 2px;
+}
+table#chores th {
+	text-align: left;
+}
+div#chores {
+	position: absolute;
+	bottom: 5px;
+}
