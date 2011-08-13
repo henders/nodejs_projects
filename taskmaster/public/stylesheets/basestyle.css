@@ -1,6 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
-
+.ui-widget { 
+	font-size: small;
+}
 div#main {
 	height: 450px;
 	width: 300px;
@@ -8,6 +10,36 @@ div#main {
 	border-color: #F90;
 	margin: 0px auto;
 	background-color: #FFC;
+	padding: 0px;
+	display: table;
+}
+div#flash_error {
+	border-style: solid;
+	border-color: #F00;
+}
+div#flash_error p{
+	color: #C00;
+}
+div#pie p {
+	font-size: x-small;
+	float: right;
+}
+div#addChore {
+	margin: 10px auto;
+}
+div#footer {
+	margin: 0 auto;
+	height: 100%;
+}
+div.buttons {
+	clear: both;
+	-webkit-box-flex: 1;
+}
+fieldset {
+	width: 290px;
+	border-style: dashed;
+	border-color: #F90;
+	margin: 10px auto;
 	padding: 0px;
 }
 label {
@@ -21,32 +53,15 @@ input {
 	width: 150px;
 	margin: 5px;
 }
-input.submit {
+input.choreSubmit {
 	clear: both;
 	margin: 0px 100px;
-	
-	font: bold 11px arial,sans-serif;	
 	width:100px;
 	height:27px;
-	color: #ffffff;
-	padding: 5px 5px;
-	cursor:pointer;	
-	
-	background: -moz-linear-gradient(
-		top,
-		#3e9400 0%,
-		#3e9400);
-	background: -webkit-gradient(
-		linear, left top, left bottom, 
-		from(#3e9400),
-		to(#3e9400));
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border: 1px solid #28691d;
-	-moz-box-shadow:
-		0px 1px 3px rgba(255,255,255,0),
-		inset 0px 0px 1px rgba(255,255,255,0.4);
+}
+input#friendSubmit {
+	width: 40px;
+	height: 27px;
 }
 
 div.logindiv {
@@ -60,15 +75,69 @@ div.logindiv input {
 	margin: 20px auto;
 }
 
-table#chores {
-	border:dotted #009900;
-	width: 296px;
-	margin: 0 2px 0px 2px;
+div.chorePie {
+	width: 250px;
+	height: 150px;
+	margin: 0 auto;
 }
-table#chores th {
-	text-align: left;
-}
+
 div#chores {
 	position: absolute;
 	bottom: 5px;
 }
+table#chores, table#leaderboard {
+	border-width: medium;
+	border-spacing: 2px;
+	border-style: ridge;
+	border-color: #0084d1;
+	border-collapse: collapse;
+	position: absolute;
+	bottom: 40px;
+	width: 296px;
+	margin: auto 2px 0 2px;
+}
+table#chores th, table#leaderboard th {
+	text-align: left;
+	border-width: 1px;
+	padding: 1px;
+	border-style: inset;
+	border-color: gray;
+	-moz-border-radius: ;
+}
+table#chores td, table#leaderboard td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: inset;
+	border-color: gray;
+	-moz-border-radius: ;
+}
+div#body {
+	display: table-row;
+	height: 100%;
+}
+nav {
+	margin: 0 auto;
+	width: 110px;
+}
+footer {
+	display: table-row:
+	margin-bottom: 0;
+}
+footer a {
+	background-size:20px 20px;
+	width: 30px;
+	height: 30px;
+}
+footer a#home_icon {
+	background-image: url('/images/icon_home.svg');
+	background-repeat: no-repeat;
+}
+footer a#friends_icon {
+	background-image: url('/images/icon_friends_b.svg');
+	background-repeat: no-repeat;
+}
+footer a#chores_icon {
+	background-image: url('/images/icon_chores_a.svg');
+	background-repeat: no-repeat;
+}
+

@@ -1,8 +1,84 @@
-<form action="/do_chore" method="post" name="createTask">
-	<label for="choreName">Chore</label>
-	<input type="text" id="choreName" name="chore">
-	<label for="personName">Person</label>
-	<input type="text" id="personName" name="person" placeholder="<%= user.name %>">
-	<input type="submit" class="submit" value="Do it!"/>
-</form>
+<div id="addChore">
+	<form action="/do_chore" method="post" name="createTask">
+		<label for="choreName">Chore</label>
+		<input type="text" id="choreName" name="chore" autofocus required placeholder="Start typing for autocomplete...">
+		<label for="personName">Person</label>
+		<input type="text" id="personName" name="person" placeholder="<%= user.name %>">
+		<input type="submit" id='choreSubmit' value="Do it!"/>
+	</form>
+</div>
 
+<br/>
+<a href="/show" id="viewChores">
+<div id="pie">
+	<div id="chorePie" class="graph"></div>
+	<p>Click pie chart to see breakdown</p>	
+</div>
+</a>
+
+<br/>
+<a href="#" id="addFriendButton">Add friend</a>	
+
+<div id="dialog-modal-addFriend" title="Enter friend email...">
+<form action="/add_friend" id="addFriend" method="post" accept-charset="utf-8">
+	<input type="email" name="email" value="" placeholder="Enter friend's email...">
+	<input type="submit" id="friendSubmit" class="submit" value="&rarr;">
+</form>
+</div>
+
+<table id="leaderboard">
+	<caption>Leaderboard</caption>
+	<tr>
+		<td>1st</td>
+		<td>Shane</td>
+		<td>+41</td>
+	</tr>
+	<tr>
+		<td>2nd</td>
+		<td>Sara</td>
+		<td>+0</td>
+	</tr>
+</table>
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		// Setup the input form fields
+		var availableChores = <%- types %>;
+		var availableFriends = <%- friends %>;
+		$('#choreName').autocomplete( { source: availableChores} );
+		$('#personName').autocomplete( { source: availableFriends} );
+
+		// Create the dropdown input form
+		$('#addFriendButton').click(function() {
+			$( "#dialog-modal-addFriend" ).dialog({
+				closeOnEscape: true,
+				height: 100,
+				modal: true
+			});
+			return false;
+		});
+		$('#dialog-modal-addFriend').hide();
+
+
+		// Set UI button styles
+		$('#addFriendButton, #choreSubmit').button();
+		$('#friendSubmit').button({ icons: {primary: 'ui-icon-check'} });
+		$('#choreSubmit').addClass('choreSubmit');
+		$('#chorePie').addClass('chorePie');
+		$('#addFriendButton').addClass('index_button');
+
+		// Draw the pie chart
+		$.plot($("#chorePie"), <%- chorePieData %>,
+		{
+			series: {
+				pie: { 
+					show: true,
+					combine: {
+						color: '#999',
+						threshold: 0.1
+					}
+				}
+			}
+		});
+	});
+
+</script>

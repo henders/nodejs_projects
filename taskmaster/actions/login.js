@@ -2,23 +2,6 @@ var models = require("../models");
 
 var doStuff = {
 
-	doGet: function () {
-		console.log("Rendering the normal login screen");
-		this.res.render('login', {
-			title: "Shane's Task Server",
-			register: false
-		});
-	},
-
-	doPost: function() {
-		if (this.isRegistering) {
-			this.registerUser();
-		}
-		else {
-			this.login();
-		}
-	},
-	
 	login: function() {
 		var email = this.req.body.email;
 		var that = this;
@@ -28,65 +11,41 @@ var doStuff = {
 												}, function(err, result) {
 			if (err) {
 				console.log("Failed to find this user:" + err.message);
+				that.req.flash('error', JSON.stringify(err));
+				that.res.redirect('/');
 			}
-			else if (!result || !result.id) {
+			// Want to encourage people to enter a name always
+			else if (!result || !result.name) {
 				// register this bad-ass
 				console.log("Redirect to the registration screen");
-				that.res.render('login', {
-					title: "Shane's Task Server",
-					register: true
-				});
-			}
-			else {
-				console.log("Found " + result + " users");
-				that.req.session.user = result;
-				that.res.render('index', {
-					title: "Shane's Task Server",
-					user: result
-				});
-			}
-		});
-	},
-
-	registerUser: function() {
-		var email = this.req.body.email;
-		var name = this.req.body.name;
-		var that = this;
-
-		// Load default user
-		console.log("Registering User:: " + name + " - " + email);
-		models.User.create( { name: name, email: email}, function(err, result) {
-			if (err || !result || !result.rowCount) {
-				console.log("Error: Failed to create the new user");
-				that.res.render('login', {
-					title: "Shane's Task Server",
-					register: true
-				});
+				that.req.flash('info', 'Finish the registration by entering your name');
+				that.req.session.email = email;
+				that.res.redirect('/register_user', 301);
 			}
 			else {
 				that.req.session.user = result;
-				that.res.render('index', {
-					title: "Shane's Task Server",
-					user: result
-				});
+				that.res.redirect('/index');
 			}
 		});
 	},
 
 	route: function(isGet) {
 		if (isGet) {
-			this.doGet();
+			console.log("Rendering the normal login screen");
+			this.res.render('login', {
+				title: "Shane's Task Server",
+				flash: this.req.flash()
+			});
 		}
 		else {
-			this.doPost();
+			this.login();
 		}
 	}
 };
 
-exports.route = function(req, res, isGet, isRegistering) {
+exports.route = function(req, res, isGet) {
 	doStuff.req = req;
 	doStuff.res = res;
-	doStuff.isRegistering = isRegistering;
 
 	doStuff.route(isGet);
 };

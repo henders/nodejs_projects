@@ -1,17 +1,11 @@
-<% if (!register) { %>
 	<div class="logindiv">
-		<form action="login_submit" method="post" accept-charset="utf-8">
-			<input type="email" name="email" value="">
-			<input type="submit" class="submit" value="Login &rarr;">
+		<form action="login" method="post" accept-charset="utf-8">
+			<input type="email" name="email" value="" placeholder="Enter email to login...">
+			<input type="submit" id="submit" class="submit" value="Login &rarr;">
 		</form>
 	</div>
-<% } %>
-<% if (register) { %>
-	<div class="logindiv">
-		<form action="register_user" method="post" accept-charset="utf-8">
-			<input type="email" name="email" placeholder="example@example.com">
-			<input type="text" name="name" placeholder="John Doe">
-			<input type="submit" class="submit" value="Register &rarr;">
-		</form>
-	</div>
-<% } %>
+
+	<script type="text/javascript" charset="utf-8">
+		$('#submit').button();
+	</script>
+

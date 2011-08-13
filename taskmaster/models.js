@@ -18,6 +18,13 @@ var User = FastLegS.Base.extend({
 	primaryKey: 'id'
 });
 
+var Friend = FastLegS.Base.extend({
+	tableName: 'friends',
+	primaryKey: 'id',
+	one: [ {user: User, joinOn: 'user_id'},
+					{friend: User, joinOn: 'friend_user_id'} ]
+});
+
 var ChoreType = FastLegS.Base.extend({
 	tableName: 'chore_types',
 	primaryKey: 'id'});
@@ -30,5 +37,6 @@ var Chore = FastLegS.Base.extend({
 	]});
 
 exports.User = User;
+exports.Friend = Friend;
 exports.ChoreType = ChoreType;
 exports.Chore = Chore;

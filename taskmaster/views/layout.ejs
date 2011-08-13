@@ -2,12 +2,67 @@
 <html lang="en">
 <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/basestyle.css' />
+ 		<link rel='stylesheet' href="/stylesheets/humanity/jquery-ui-1.8.15.custom.css" />
+		<link rel='stylesheet' href='/stylesheets/basestyle.css' />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery-ui-1.8.15.custom.min.js"></script>
+		<script type="text/javascript" src="/javascripts/flot/jquery.flot.min.js"></script>
+		<script type="text/javascript" src="/javascripts/flot/jquery.flot.pie.min.js"></script>
+
+		<script type="text/javascript" charset="utf-8">
+			$(function() {
+				$('#home_icon, #friends_icon, #chores_icon').button();
+				<% if (flash && (flash.error || flash.info)) { %>
+					$('#messages').dialog({
+							modal: true, 
+							buttons: { 
+								Ok: function() {	
+									$( this ).dialog( "close" ); 
+								}
+							}
+						});
+				<% } %>
+			});
+		</script>
 </head>
 
 <body>
 	<div id="main">
-		<%- body %>
+		<div id="body">
+			<%- body %>
+		</div>
+
+		<footer>
+			<nav>
+				<a href="/" id="home_icon"></a>
+				<a href="/friends" id="friends_icon"></a>
+				<a href="/show" id="chores_icon"></a>
+			</nav>
+		</footer>
 	</div>
+
+
+<div id="messages" title="Breaking News">
+	<% if (typeof flash != 'undefined') { %>
+		<% if (typeof flash.error != 'undefined') { %>
+				<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"> </span> 
+					<ul>
+					<% flash.error.forEach(function(name) { %>
+						<li><%= name %></li>
+					<% }) %>
+				</ul></p>
+		<% } %>
+		<% if (typeof flash.info != 'undefined') { %>
+				<p><span class="ui-icon ui-icon-info" style="float: left; margin: 0 7px 50px 0;"> </span> 
+					<ul>
+					<% flash.info.forEach(function(name) { %>
+						<li><%= name %></li>
+					<% }) %>
+				</ul></p>
+			</div>
+		<% } %>
+	<% } %>	
+</div>
+
 </body>
 </html>
