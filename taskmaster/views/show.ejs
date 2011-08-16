@@ -1,13 +1,41 @@
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('#chorePie').addClass('chorePie');
+
+		// Draw the pie chart
+		$.plot($("#chorePie"), <%- chorePieData %>,
+		{
+			series: {
+				pie: { 
+					show: true,
+					combine: {
+						color: '#999',
+						threshold: 0.1
+					}
+				}
+			}
+		});
+	});
+</script>
+
+<div id="pie">
+		<div id="chorePie" class="graph"></div>
+</div>
+
+
+<h4>Completed:</h4>
 <div id="chores">
 	<table id="chores">
 		<tr>
 			<th>Date:</th>
 			<th>Chore:</th>
+			<th>Pt:</th>
 		</tr>
 		<% chores.forEach(function(chore) { %>
 			<tr>
 				<td><%= chore.done_date %></td>
 				<td><%= chore.type.name %></td>
+				<td><%= chore.points %></td>
 			</tr>
 		<% }) %>
 	</table>

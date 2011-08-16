@@ -11,7 +11,7 @@
 
 		<script type="text/javascript" charset="utf-8">
 			$(function() {
-				$('#home_icon, #friends_icon, #chores_icon').button();
+				$('#home_icon, #friends_icon, #chores_icon, #logout_icon').button();
 				<% if (flash && (flash.error || flash.info)) { %>
 					$('#messages').dialog({
 							modal: true, 
@@ -32,15 +32,16 @@
 			<%- body %>
 		</div>
 
-		<footer>
-			<nav>
-				<a href="/" id="home_icon"></a>
-				<a href="/friends" id="friends_icon"></a>
-				<a href="/show" id="chores_icon"></a>
-			</nav>
-		</footer>
 	</div>
 
+	<footer>
+		<nav>
+			<a href="/" id="home_icon"></a>
+			<a href="/friends" id="friends_icon"></a>
+			<a href="/show" id="chores_icon"></a>
+			<a href="/logout" id="logout_icon"></a>
+		</nav>
+	</footer>
 
 <div id="messages" title="Breaking News">
 	<% if (typeof flash != 'undefined') { %>

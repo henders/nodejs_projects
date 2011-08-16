@@ -1,0 +1,103 @@
+
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('#section_friends').tabs();
+		$('#friendAll, #friendRequests, #friendPending').addClass('ui-widget ui-state-error ui-corner-all');
+		$('#friendSubmit').button({ icons: {primary: 'ui-icon-check'} });
+		$('.button').button();
+
+		// Create the dropdown input form
+		$('#addFriendButton').click(function() {
+			$( "#dialog-modal-addFriend" ).dialog({
+				closeOnEscape: true,
+				height: 100,
+				modal: true
+			});
+			return false;
+		});
+		$('#dialog-modal-addFriend').hide();
+	});
+</script>
+
+<div id="friends">
+	<section id="section_friends">
+		<ul>
+			<li><a href="#friendTabAll">All</a></li>
+			<li><a href="#friendTabRequests">Requests (<%= requests.length %>)</a></li>
+			<li><a href="#friendTabPending">Pending (<%= pending.length %>)</a></li>
+		</ul>
+		
+		<article id="friendTabAll">
+			<table id="friendAll">
+				<% if (all.length) { %>
+					<tr>
+						<th>Name:</th>
+						<th>Date added:</th>
+						<th>Points:</th>
+					</tr>
+				<% } else { %>
+					<tr><td colspan="3">Add some friends ya loner!</td></tr>
+				<% } %>
+				<% all.forEach(function(friend) { %>
+					<tr>
+						<td><%= friend.name %></td>
+						<td><%= friend.date.toDateString() %></td>
+						<td><%= friend.points %></td>
+					</tr>
+				<% }) %>
+			</table>
+		</article>
+
+		<article id="friendTabRequests">
+			<table id="friendRequests">
+				<% if (requests.length) { %>
+					<tr>
+						<th>Name:</th>
+						<th>Action:</th>
+					</tr>
+				<% } else { %>
+					<tr><td colspan="3">Nobody is bugging you, be at ease!</td></tr>
+				<% } %>
+				<% requests.forEach(function(friend) { %>
+					<tr>
+						<td><%= friend.name %></td>
+						<td>
+							<a href="/friend_approve/<%= friend.id %>" title="Approve friend" id="approve" class="button" />
+							<a href="/friend_disapprove/<%= friend.id %>" title="Don't approve friend" id="disapprove" class="button" />
+						</td>
+					</tr>
+				<% }) %>
+			</table>
+		</article>
+
+		<article id="friendTabPending">
+			<table id="friendPending">
+				<% if (pending.length) { %>
+					<tr>
+						<th>Name:</th>
+						<th>Status:</th>
+					</tr>
+				<% } else { %>
+					<tr><td colspan="3">No pending requests, be at ease!</td></tr>
+				<% } %>
+				<% pending.forEach(function(friend) { %>
+					<tr>
+						<td><%= friend.name %></td>
+						<td><%= friend.status %></td>
+					</tr>
+				<% }) %>
+			</table>
+		</article>
+	</section>
+
+	<a href="#" id="addFriendButton" class="button">Add friend</a>	
+
+	<div id="dialog-modal-addFriend" title="Enter friend email...">
+		<form action="/add_friend" id="addFriend" method="post" accept-charset="utf-8">
+			<input type="email" name="email" value="" placeholder="Enter friend's email...">
+			<input type="submit" id="friendSubmit" class="submit" value="&rarr;">
+		</form>
+	</div>
+
+</div>
+

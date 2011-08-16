@@ -4,14 +4,17 @@
 	font-size: small;
 }
 div#main {
-	height: 450px;
+	height: 425px;
 	width: 300px;
 	border-style: solid;
 	border-color: #F90;
 	margin: 0px auto;
 	background-color: #FFC;
 	padding: 0px;
-	display: table;
+}
+h4 {
+	margin: 10px 0 0px auto;
+	padding-left: 5px;
 }
 div#flash_error {
 	border-style: solid;
@@ -20,20 +23,16 @@ div#flash_error {
 div#flash_error p{
 	color: #C00;
 }
+div#pie {
+}
+div#leaderboardDiv {
+}
 div#pie p {
 	font-size: x-small;
 	float: right;
 }
 div#addChore {
 	margin: 10px auto;
-}
-div#footer {
-	margin: 0 auto;
-	height: 100%;
-}
-div.buttons {
-	clear: both;
-	-webkit-box-flex: 1;
 }
 fieldset {
 	width: 290px;
@@ -82,8 +81,10 @@ div.chorePie {
 }
 
 div#chores {
-	position: absolute;
-	bottom: 5px;
+	height: 240px;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 table#chores, table#leaderboard {
 	border-width: medium;
@@ -91,10 +92,8 @@ table#chores, table#leaderboard {
 	border-style: ridge;
 	border-color: #0084d1;
 	border-collapse: collapse;
-	position: absolute;
-	bottom: 40px;
-	width: 296px;
 	margin: auto 2px 0 2px;
+	width: 296px;
 }
 table#chores th, table#leaderboard th {
 	text-align: left;
@@ -111,33 +110,58 @@ table#chores td, table#leaderboard td {
 	border-color: gray;
 	-moz-border-radius: ;
 }
+table#friendAll, table#friendRequests, table#friendPending{
+	width: 100%;
+}
 div#body {
-	display: table-row;
 	height: 100%;
 }
 nav {
 	margin: 0 auto;
-	width: 110px;
+	width: 180px;
 }
 footer {
-	display: table-row:
 	margin-bottom: 0;
 }
-footer a {
+nav a {
 	background-size:20px 20px;
 	width: 30px;
 	height: 30px;
 }
-footer a#home_icon {
+nav a:last-child {
+	float: right;
+}
+nav a#home_icon {
 	background-image: url('/images/icon_home.svg');
 	background-repeat: no-repeat;
 }
-footer a#friends_icon {
-	background-image: url('/images/icon_friends_b.svg');
+nav a#friends_icon {
+	background-image: url('/images/icon_friends.svg');
 	background-repeat: no-repeat;
 }
-footer a#chores_icon {
+nav a#chores_icon {
 	background-image: url('/images/icon_chores_a.svg');
 	background-repeat: no-repeat;
 }
-
+nav a#logout_icon {
+	background-image: url('/images/icon_unlock.svg');
+	background-repeat: no-repeat;
+	background-size:15px 20px;
+}
+a#addFriendButton {
+	margin-top: 10px;
+}
+a#approve {
+	background-image: url('/images/icon_approve.svg');
+	background-repeat: no-repeat;
+	background-size:10px 10px;
+	width: 20px;
+	height: 20px;
+}
+a#disapprove {
+	background-image: url('/images/icon_disapprove.svg');
+	background-repeat: no-repeat;
+	background-size:10px 10px;
+	width: 20px;
+	height: 20px;
+}

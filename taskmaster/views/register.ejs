@@ -1,0 +1,13 @@
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('#submit').button();
+	});
+</script>
+
+	<div class="logindiv">
+		<form action="register_user" method="post" accept-charset="utf-8">
+			<input type="email" name="email" placeholder="example@example.com" value="<%= email %>">
+			<input type="text" name="name" placeholder="Enter your name...">
+			<input type="submit" id="submit" class="submit" value="Register &rarr;">
+		</form>
+	</div>

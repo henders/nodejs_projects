@@ -1,4 +1,6 @@
 var models = require("../models");
+var _ = require('underscore')._;
+var date = require('datetime');
 
 
 var doStuff = {
@@ -12,14 +14,15 @@ var doStuff = {
 
 		// Check if the chore type exists
 		models.ChoreType.find({'name.like': choreName}, function(err, result) {
-			if (err || 0 == result.length) {
+			if (err || !result.length) {
 				// Doesn't exist so create it!
 				models.ChoreType.create({name: choreName, 
 																 created_at: new Date()
 																}, function(err2, result2) {
-					if (err2 || 0 == result2.rowCount) {
+					if (err2 || !result2.rowCount) {
 						console.log("Failed to create the chore type: " + choreName + ": " + JSON.stringify(err2));
-						that.renderChores(err2.message || "Empty result set");
+						that.req.flash('error', "Failed to create the chore type: " + choreName + ": " + JSON.stringify(err2));
+						that.renderChores();
 					}
 					else {
 						console.log("Created new chore type: " + choreName);
@@ -40,44 +43,57 @@ var doStuff = {
 		// We should now have the choretype and person (through session) info
 
 		if (!this.req.session.user) {
-			that.renderChores("No user set");
+			that.req.flash('error', "No user set");
+			that.res.redirect('/login');
 		}
 		else {
 			var that = this;
 
 			models.Chore.create( {type: that.choreType.id,
 														person: that.req.session.user.id,
-														done_date: new Date() ,
-														created_at: new Date() 
+														done_date: new Date(),
+														created_at: new Date(),
+														time_taken: that.req.body.time
 													 }, function(err, result) {
-					if (err || 0 == result.length) {
-						that.renderChores(err.message || "Empty result set");
-					}
-				else {
-					that.renderChores("Succesfully created chore: " + that.choreType.name);
+				if (err || !result) {
+					that.req.flash('error', "Failed to create the chore: " + JSON.stringify(err));
 				}
+				that.renderChores();
 			});
 		}
 	},
 	
-	renderChores: function(msg) {
+	renderChores: function() {
 		var that = this;
 
 		var render = function(err, chores) {
+			var choreData = [];
+			var chorePieData = [];
+			var dateDone;
+
 			console.log("Chores: " + JSON.stringify(chores));
 			// change the date/time display of chores
+
+			// refactor chores data for pie chart display
 			for (var i = 0; i < chores.length; i++) {
-				var dateDone = new Date(chores[i].done_date);
-				chores[i].done_date = dateDone.getFullYear() + "/" + dateDone.getMonth() + "/" +
-													dateDone.getDate() + " " + dateDone.toLocaleTimeString();
-			};
+				choreData[chores[i].type.name] = choreData[chores[i].type.name] ? 
+				choreData[chores[i].type.name] + 1 : 1;
+
+				dateDone = new Date(chores[i].done_date);
+				chores[i].done_date = date.format(dateDone, '%b %d %H:%I');
+				chores[i].points = chores[i].time_taken;
+			}
+			_.each(_.keys(choreData), function(key) {
+				chorePieData[chorePieData.length] = {label: key, data: choreData[key] };
+			});
+			console.log("ChorePieData: " + JSON.stringify(chorePieData));
 
 			that.res.render('show', {
 				title: "Task Server: Chore List",
 				flash: that.req.flash(),
 				user: that.req.session.user,
 				chores: chores,
-				error: msg || err
+				chorePieData: JSON.stringify(chorePieData)
 			});
 		};
 
@@ -87,11 +103,10 @@ var doStuff = {
 				type: {},
 				person: {}
 			},
-			limit: 4,
-			order: ['-id']
+			order: ['-done_date']
 		}, render);
 	}
-}
+};
 
 exports.route = function(req, res, action) {
 	doStuff.req = req;

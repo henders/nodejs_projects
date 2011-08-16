@@ -46,6 +46,11 @@ app.post('/login', function(req, res) {
 	index.route(req, res, false); // isGet = false
 });
 
+app.get('/logout', function(req, res) {
+	req.session.user = undefined;
+	res.redirect('login');
+});
+
 app.get('/register_user', function(req, res) {
 	var index = require("./actions/register.js");
 	index.route(req, res, false); // isPost = false
@@ -74,6 +79,16 @@ app.post('/add_friend', function(req, res) {
 app.get('/friends', function(req, res) {
 	var friends = require("./actions/friends.js");
 	friends.route(req, res, "get");
+});
+
+app.get("/friend_approve/:id", function(req, res) {
+	var friends = require("./actions/friends.js");
+	friends.route(req, res, "approve");
+});
+
+app.get("/friend_deny/:id", function(req, res) {
+	var friends = require("./actions/friends.js");
+	friends.route(req, res, "deny");
 });
 
 app.get('/flash', function(req, res) {
