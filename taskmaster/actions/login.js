@@ -1,8 +1,12 @@
 var models = require("../models");
 
-var doStuff = {
+var router = function(spec) {
+	var newRouter = {};
 
-	login: function() {
+	newRouter.req = spec.req;
+	newRouter.res = spec.res;
+
+	newRouter.login = function() {
 		var email = this.req.body.email;
 		var that = this;
 
@@ -27,9 +31,9 @@ var doStuff = {
 				that.res.redirect('/index');
 			}
 		});
-	},
+	};
 
-	route: function(isGet) {
+	newRouter.route = function(isGet) {
 		if (isGet) {
 			console.log("Rendering the normal login screen");
 			this.res.render('login', {
@@ -40,12 +44,12 @@ var doStuff = {
 		else {
 			this.login();
 		}
-	}
+	};
+	
+	return newRouter;
 };
 
 exports.route = function(req, res, isGet) {
-	doStuff.req = req;
-	doStuff.res = res;
-
+	var doStuff = router({req:req, res:res});
 	doStuff.route(isGet);
 };

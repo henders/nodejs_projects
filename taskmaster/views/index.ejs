@@ -9,11 +9,56 @@
 		// Set UI button styles
 		$('#choreSubmit').button();
 		$('#choreSubmit').addClass('choreSubmit');
+		$('#timeLabel').addClass('ui-widget');
+
+		var leaderBoardData = [];
+
+		var drawleaderBoard = function() {
+			$.plot($('#leaderboardDiv'), leaderBoardData, {
+				series: {
+					lines: {show: false},
+					bars: { 
+						show: true,
+						barWidth: 0.5,
+						horizontal: true
+					}
+				},
+				yaxis: { ticks: 0, max: <%= userIds.length %>},
+				//xaxis: { tickLength: 0},
+				legend: { position: "se"},
+				grid: {borderWidth: 0},
+			});
+		};
+
+		// Want to reverse sort the array
+		function sortLeaders(a, b) {
+			return a.data[0][0] - b.data[0][0];
+		}
+		
+		// Load dynamic data for graphs
+		<% userIds.forEach(function(val) { %>	
+			$.getJSON('/api/getUserPoints/<%- val %>', function(pointData) { 
+				leaderBoardData.push({
+					label: pointData.name, 
+					data: [[pointData.points, 0]]
+				});
+				leaderBoardData.sort(sortLeaders);
+				// Fix vertical ordering as well
+				for (var i = 0; i < leaderBoardData.length; i++) {
+					leaderBoardData[i].data[0][1] = i + 0.3;
+				}
+				drawleaderBoard();
+			});
+		<% }) %>
+		
+		// Set the height of the leaderBoardData
+		$('#leaderboardDiv').height(Math.min(<%= userIds.length %> * 50, 200));
 	});
 
-	function showValue(val) {
-		$('#timeLabel').html(val + 'mins');
+	function showValue(value) {
+		$('#timeLabel').val(value + 'm');
 	}
+
 </script>
 	
 <div id="addChore">
@@ -21,9 +66,12 @@
 		<label for="choreName">Chore</label>
 		<input type="text" id="choreName" name="chore" autofocus required placeholder="Start typing for autocomplete...">
 		<label for="personName">Person</label>
-		<input type="text" id="personName" name="person" placeholder="<%= user.name %>">
-		<label for="time" id="timeLabel">30mins</label>
-		<input type="range" id= "time" name="time" min="10" max="120" value="30" step="5" onchange="showValue(this.value)" >
+		<input type="text" id="personName" name="person" placeholder="<%= user.name %>"><br/>
+		<label for="time">Time: </label>
+		<span>
+			<input type="range" id= "time" name="time" min="10" max="120" value="30" step="5" onchange="showValue(this.value)" >
+			<input type="text" id="timeLabel" value="30m" readonly>
+		</span>
 		<input type="submit" id='choreSubmit' value="Do it!"/>
 	</form>
 </div>
@@ -31,20 +79,10 @@
 <br/>
 
 <br/>
-
-<div id="leaderboardDiv">
-	<table id="leaderboard">
-		<caption>Leaderboard</caption>
-		<tr>
-			<td>1st</td>
-			<td>Shane</td>
-			<td>+41</td>
-		</tr>
-		<tr>
-			<td>2nd</td>
-			<td>Sara</td>
-			<td>+0</td>
-		</tr>
-	</table>	
-</div>
+<header>
+	<hgroup>
+		<h4><u>Leader Board</u></h4>
+	</hgroup>
+</header>
+<div id="leaderboardDiv" title="Leader Board" class="graph"></div>
 

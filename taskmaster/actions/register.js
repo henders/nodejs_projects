@@ -1,8 +1,12 @@
 var models = require("../models");
 
-var doStuff = {
+var router = function(spec) {
+	var newRouter = {};
 
-	registerUser: function() {
+	newRouter.req = spec.req;
+	newRouter.res = spec.res;
+
+	newRouter.registerUser = function() {
 		var email = this.req.body.email;
 		var name = this.req.body.name;
 		var that = this;
@@ -56,9 +60,9 @@ var doStuff = {
 				});
 			}
 		});
-	},
+	};
 
-	route: function(isPost) {
+	newRouter.route = function(isPost) {
 		if (!isPost) {
 			// register this bad-ass
 			this.res.render('register', {
@@ -70,13 +74,13 @@ var doStuff = {
 		else {
 			this.registerUser();
 		}
-	}
+	};
+	
+	return newRouter;
 };
 
 exports.route = function(req, res, isPost) {
-	doStuff.req = req;
-	doStuff.res = res;
-
+	var doStuff = router({req:req, res:res});
 	doStuff.route(isPost);
 };
 

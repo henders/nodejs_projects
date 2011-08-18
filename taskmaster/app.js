@@ -15,8 +15,8 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.bodyParser());
-	app.use(express.cookieParser());
-	app.use(express.session({ secret: "hendercaust" }));
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: "hendercaust" }));
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -96,6 +96,12 @@ app.get('/flash', function(req, res) {
 	var index = require("./actions/login.js");
 	index.route(req, res, true); // isGet = true
 });
+
+app.get('/api/getUserPoints/:id', function(req, res) {
+	var submitChore = require("./actions/submitChore.js");
+	submitChore.route(req, res, "getUserPoints");
+});
+
 
 // port is provided by heroku if running through that.
 var port = process.env.PORT || 3000;

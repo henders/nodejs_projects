@@ -8,5 +8,8 @@
     , "pg": ">=0.5.3"
     , "FastLegS": ">=0.1.0"
     , "nodemailer": ">=0.1.24"
+		, "underscore": ">=1.1.4"
+		, "datetime": ">=0.0.3"
+		, "expresso": ">=0.7.3"
   }
 }

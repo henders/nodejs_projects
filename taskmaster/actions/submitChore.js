@@ -3,12 +3,14 @@ var _ = require('underscore')._;
 var date = require('datetime');
 
 
-var doStuff = {
-	req: null,
-	res: null,
-	choreType: null,
+var router = function(spec) {
+	var newRouter = {};
 
-	postChore: function() {
+	newRouter.req = spec.req;
+	newRouter.res = spec.res;
+	newRouter.choreType = null;
+
+	newRouter.postChore = function() {
 		var that = this;
 		var choreName = this.req.body.chore;
 
@@ -37,14 +39,14 @@ var doStuff = {
 				that.createChore();
 			}
 		});
-	},
+	};
 
-	createChore: function() {
+	newRouter.createChore = function() {
 		// We should now have the choretype and person (through session) info
 
 		if (!this.req.session.user) {
-			that.req.flash('error', "No user set");
-			that.res.redirect('/login');
+			this.req.flash('error', "No user set");
+			this.res.redirect('/login');
 		}
 		else {
 			var that = this;
@@ -61,9 +63,9 @@ var doStuff = {
 				that.renderChores();
 			});
 		}
-	},
+	};
 	
-	renderChores: function() {
+	newRouter.renderChores = function() {
 		var that = this;
 
 		var render = function(err, chores) {
@@ -72,13 +74,13 @@ var doStuff = {
 			var dateDone;
 
 			console.log("Chores: " + JSON.stringify(chores));
-			// change the date/time display of chores
 
 			// refactor chores data for pie chart display
 			for (var i = 0; i < chores.length; i++) {
 				choreData[chores[i].type.name] = choreData[chores[i].type.name] ? 
 				choreData[chores[i].type.name] + 1 : 1;
 
+				// change the date/time display of chores
 				dateDone = new Date(chores[i].done_date);
 				chores[i].done_date = date.format(dateDone, '%b %d %H:%I');
 				chores[i].points = chores[i].time_taken;
@@ -105,12 +107,34 @@ var doStuff = {
 			},
 			order: ['-done_date']
 		}, render);
-	}
+	};
+
+	newRouter.getUserPoints = function(id) {
+		var that = this;
+		var returnObject = { name: '', points: 0 };
+
+		console.log("Finding points for user: " + id);
+		models.User.findOne({id: id}, function(err, user) {
+			returnObject.id = user.id;	
+			returnObject.name = user.name;
+
+			// Read all the current chores for the user
+			models.Chore.find({person: id}, { include: { person: {}}}, function(err, chores) {
+				// refactor chores data for pie chart display
+				for (var i = 0; i < chores.length; i++) {
+					returnObject.points += chores[i].time_taken;
+				}
+				console.log("User Points: " + JSON.stringify(returnObject));
+				that.res.json(returnObject);
+			});
+		});
+	};
+
+	return newRouter;
 };
 
 exports.route = function(req, res, action) {
-	doStuff.req = req;
-	doStuff.res = res;
+	var doStuff = router({req:req, res:res});
 
 	if (!req.session.user) {
 		// User isn't signed in yet, so redirect to login screen
@@ -124,7 +148,9 @@ exports.route = function(req, res, action) {
 			case 'createChore':
 				doStuff.postChore();
 				break;
-
+			case 'getUserPoints':
+				doStuff.getUserPoints(req.params.id);
+				break;
 			default:
 				req.flash('error', 'Unknown friend action (%s)', action);
 				res.redirect('/');

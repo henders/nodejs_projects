@@ -9,9 +9,13 @@ emailer.SMTP = {
 	port: 465
 };
 
-var doStuff = {
+var router = function(spec) {
+	var newRouter = {};
 
-	addFriends: function() {
+	newRouter.req = spec.req;
+	newRouter.res = spec.res;
+
+	newRouter.addFriends = function() {
 		var email = this.req.body.email;
 		var that = this;
 
@@ -45,9 +49,9 @@ var doStuff = {
 				that.createFriend(userFriend);
 			}
 		});
-	},
+	};
 
-	renderFriends: function() {
+	newRouter.renderFriends = function() {
 		var that = this;
 		var all = [];
 		var requests = [];
@@ -60,7 +64,7 @@ var doStuff = {
 					if (a[i].approved) {
 						all[i] = {name: a[i].friend.name || a[i].friend.email,
 											date: a[i].approved_at,
-											points: a[i].friend.points};
+											points: a[i].friend.points || 0};
 					}
 					else {
 						pending[i] = { name: a[i].friend.name || a[i].friend.email };
@@ -100,9 +104,9 @@ var doStuff = {
 				});
 			});
 		});
-	},
+	};
 
-	createFriend: function(userFriend) {
+	newRouter.createFriend = function(userFriend) {
 		var that = this;
 
 		// Check that they didn't already create this link
@@ -132,9 +136,9 @@ var doStuff = {
 					});
 				}
 			});
-	},
+	};
 
-	inviteUser: function(email) {
+	newRouter.inviteUser = function(email) {
 		var that = this;
 
 		emailer.send_mail({
@@ -151,21 +155,21 @@ var doStuff = {
 				that.req.flash('info', 'Sent an invite to your friend to join');
 			}
 		});
-	},
+	};
 
-	approveFriend: function(id) {
+	newRouter.approveFriend = function(id) {
 		this.updateFriend(id, {approved: true, approved_at: new Date()},
 								'Failed to accept the friendship, please try again later',
 								'Friend has been accepted into the slavery household!');
-	},
+	};
 
-	disapproveFriend: function(id) {
+	newRouter.disapproveFriend = function(id) {
 		this.updateFriend(id, {approved: true, approved_at: new Date()},
 								'Failed to deny the friendship (karma?), please try again later',
 								'Friend has sent to rejection-land!');
-	},
+	};
 
-	updateFriend: function(id, fields, failureMsg, succesMsg) {
+	newRouter.updateFriend = function(id, fields, failureMsg, succesMsg) {
 		var that = this;
 
 		// Check that they didn't already create this link
@@ -204,12 +208,13 @@ var doStuff = {
 				});
 			}
 		});
-	}
+	};
+	
+	return newRouter;
 };
 
 exports.route = function(req, res, action) {
-	doStuff.req = req;
-	doStuff.res = res;
+	var doStuff = router({req:req, res:res});
 
 	console.log("Friends: " + action);
 	if (!req.session.user) {

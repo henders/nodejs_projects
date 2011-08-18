@@ -26,6 +26,8 @@ div#flash_error p{
 div#pie {
 }
 div#leaderboardDiv {
+	width: 300px;
+	height: 200px;
 }
 div#pie p {
 	font-size: x-small;
@@ -48,9 +50,16 @@ label {
 	width: 70px;
 	margin: 5px;
 }
+label#timeLabel {
+	clear: both;
+	float: right;
+}
 input {
 	width: 150px;
 	margin: 5px;
+}
+input[type="range"] {
+	clear: both;
 }
 input.choreSubmit {
 	clear: both;
@@ -62,7 +71,11 @@ input#friendSubmit {
 	width: 40px;
 	height: 27px;
 }
-
+input#timeLabel {
+	width:30px;
+	background-color:transparent;
+	opacity:0.7;
+}
 div.logindiv {
 	margin: 100px auto;
 	width: 200px;
