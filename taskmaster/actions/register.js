@@ -32,7 +32,7 @@ var router = function(spec) {
 
 		// Load default user
 		console.log("Registering User:: " + name + " - " + email);
-		models.User.findOne( {'email.like': email}, function(err, findResult) {
+		models.User.findOne( {'email.ilike': email}, function(err, findResult) {
 			err && that.req.flash('error', err);
 			if (findResult && findResult.id && findResult.registered) {
 				that.req.flash('info', 'Ooops, that email appears to have already been registered, do you have an evil twin?');

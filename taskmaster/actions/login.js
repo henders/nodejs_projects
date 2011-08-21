@@ -1,4 +1,4 @@
-var models = require("../models");
+var models = require("models");
 
 var router = function(spec) {
 	var newRouter = {};
@@ -11,7 +11,7 @@ var router = function(spec) {
 		var that = this;
 
 		console.log("Logging in: " + email);
-		models.User.findOne({ 'email.like': email
+		models.User.findOne({ 'email.ilike': email
 												}, function(err, result) {
 			if (err) {
 				console.log("Failed to find this user:" + err.message);

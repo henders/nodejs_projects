@@ -9,45 +9,6 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
 
-SET search_path = public, pg_catalog;
-
-ALTER TABLE ONLY public.friends DROP CONSTRAINT friends_user_id_fkey;
-ALTER TABLE ONLY public.friends DROP CONSTRAINT friends_friend_user_id_fkey;
-ALTER TABLE ONLY public.chores DROP CONSTRAINT chores_type_fkey;
-ALTER TABLE ONLY public.chores DROP CONSTRAINT chores_person_fkey;
-DROP INDEX public.name;
-ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
-ALTER TABLE ONLY public.friends DROP CONSTRAINT friends_pkey;
-ALTER TABLE ONLY public.chores DROP CONSTRAINT chores_pkey;
-ALTER TABLE ONLY public.chore_types DROP CONSTRAINT chore_types_pkey;
-ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.chores ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.chore_types ALTER COLUMN id DROP DEFAULT;
-DROP SEQUENCE public.users_id_seq;
-DROP TABLE public.users;
-DROP TABLE public.friends;
-DROP SEQUENCE public.chores_id_seq;
-DROP TABLE public.chores;
-DROP SEQUENCE public.chore_types_id_seq;
-DROP TABLE public.chore_types;
-DROP PROCEDURAL LANGUAGE plpgsql;
-DROP SCHEMA public;
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
---
-
-CREATE SCHEMA public;
-
-
-ALTER SCHEMA public OWNER TO postgres;
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
 --
 -- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
@@ -106,7 +67,8 @@ CREATE TABLE chores (
     person integer,
     id integer NOT NULL,
     done_date timestamp with time zone,
-    created_at timestamp with time zone
+    created_at timestamp with time zone,
+    time_taken integer DEFAULT 0
 );
 
 
@@ -134,19 +96,6 @@ ALTER SEQUENCE chores_id_seq OWNED BY chores.id;
 
 
 --
--- Name: friends; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE friends (
-    id integer NOT NULL,
-    user_id integer NOT NULL,
-    friend_user_id integer NOT NULL
-);
-
-
-ALTER TABLE public.friends OWNER TO postgres;
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: shane; Tablespace: 
 --
 
@@ -154,7 +103,9 @@ CREATE TABLE users (
     name text,
     email text NOT NULL,
     id integer NOT NULL,
-    created_at timestamp with time zone
+    created_at timestamp with time zone,
+    points integer DEFAULT 0,
+    registered boolean
 );
 
 
@@ -180,6 +131,23 @@ ALTER TABLE public.users_id_seq OWNER TO shane;
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
+
+--
+-- Name: friends; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE friends (
+    id integer DEFAULT nextval('users_id_seq'::regclass) NOT NULL,
+    user_id integer NOT NULL,
+    friend_user_id integer NOT NULL,
+    approved boolean DEFAULT false,
+    approved_at timestamp with time zone,
+    created_at timestamp with time zone,
+    denied boolean DEFAULT false
+);
+
+
+ALTER TABLE public.friends OWNER TO postgres;
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: shane
@@ -227,6 +195,14 @@ ALTER TABLE ONLY friends
 
 
 --
+-- Name: users_email_key; Type: CONSTRAINT; Schema: public; Owner: shane; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: shane; Tablespace: 
 --
 
@@ -239,6 +215,13 @@ ALTER TABLE ONLY users
 --
 
 CREATE INDEX name ON chore_types USING btree (name);
+
+
+--
+-- Name: users_email_idx; Type: INDEX; Schema: public; Owner: shane; Tablespace: 
+--
+
+CREATE INDEX users_email_idx ON users USING btree (email);
 
 
 --
@@ -262,7 +245,7 @@ ALTER TABLE ONLY chores
 --
 
 ALTER TABLE ONLY friends
-    ADD CONSTRAINT friends_friend_user_id_fkey FOREIGN KEY (friend_user_id) REFERENCES chore_types(id);
+    ADD CONSTRAINT friends_friend_user_id_fkey FOREIGN KEY (friend_user_id) REFERENCES users(id);
 
 
 --
@@ -270,7 +253,7 @@ ALTER TABLE ONLY friends
 --
 
 ALTER TABLE ONLY friends
-    ADD CONSTRAINT friends_user_id_fkey FOREIGN KEY (user_id) REFERENCES chore_types(id);
+    ADD CONSTRAINT friends_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --

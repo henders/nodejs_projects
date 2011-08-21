@@ -6,9 +6,6 @@ var express = require('express');
 
 var app = module.exports = express.createServer();
 
-// Global root object
-var taskServer = {};
-
 // Configuration
 
 app.configure(function(){
@@ -20,6 +17,12 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+  require.paths.unshift(__dirname + '/.');
+});
+
+app.configure('test', function(){
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+  process.env.DATABASE_URL = "postgres://shane:rattlers@localhost/taskserver-test";
 });
 
 app.configure('development', function(){
@@ -102,8 +105,12 @@ app.get('/api/getUserPoints/:id', function(req, res) {
 	submitChore.route(req, res, "getUserPoints");
 });
 
+// So that 'require' for tests doesn't auto start the server
+if (!module.parent) {
+	// port is provided by heroku if running through that.
+	var port = process.env.PORT || 3000;
+	app.listen(port);
+	console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+}
 
-// port is provided by heroku if running through that.
-var port = process.env.PORT || 3000;
-app.listen(port);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
