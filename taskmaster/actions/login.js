@@ -19,7 +19,7 @@ var router = function(spec) {
 				that.res.redirect('/');
 			}
 			// Want to encourage people to enter a name always
-			else if (!result || !result.name) {
+			else if (!result || !result.name || !result.registered) {
 				// register this bad-ass
 				console.log("Redirect to the registration screen");
 				that.req.flash('info', 'Finish the registration by entering your name');

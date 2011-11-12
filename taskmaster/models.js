@@ -36,6 +36,7 @@ var Chore = FastLegS.Base.extend({
 					{ person: User, joinOn: 'person'}
 	]});
 
+
 exports.User = User;
 exports.Friend = Friend;
 exports.ChoreType = ChoreType;

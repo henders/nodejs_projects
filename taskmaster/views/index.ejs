@@ -11,6 +11,16 @@
 		$('#choreSubmit').addClass('choreSubmit');
 		$('#timeLabel').addClass('ui-widget');
 
+		$( "#timeSlider" ).slider({
+			value:30,
+			min: 10,
+			max: 120,
+			step: 5,
+			slide: function( event, ui ) {
+				$( "#timeLabel" ).val( ui.value + "m" );
+			}
+		});
+
 		var leaderBoardData = [];
 
 		var drawleaderBoard = function() {
@@ -23,6 +33,7 @@
 						horizontal: true
 					}
 				},
+				xaxis: { min: 0},
 				yaxis: { ticks: 0, max: <%= userIds.length %>},
 				//xaxis: { tickLength: 0},
 				legend: { position: "se"},
@@ -55,10 +66,6 @@
 		$('#leaderboardDiv').height(Math.min(<%= userIds.length %> * 50, 200));
 	});
 
-	function showValue(value) {
-		$('#timeLabel').val(value + 'm');
-	}
-
 </script>
 	
 <div id="addChore">
@@ -67,11 +74,9 @@
 		<input type="text" id="choreName" name="chore" autofocus required placeholder="Start typing for autocomplete...">
 		<label for="personName">Person</label>
 		<input type="text" id="personName" name="person" placeholder="<%= user.name %>"><br/>
-		<label for="time">Time: </label>
-		<span>
-			<input type="range" id= "time" name="time" min="10" max="120" value="30" step="5" onchange="showValue(this.value)" >
-			<input type="text" id="timeLabel" value="30m" readonly>
-		</span>
+		<label for="timeLabel">Time: </label>
+			<div id= "timeSlider"></div>
+			<input type="text" name="timeLabel" id="timeLabel" value="30m" readonly>
 		<input type="submit" id='choreSubmit' value="Do it!"/>
 	</form>
 </div>

@@ -1,0 +1,26 @@
+<script type="text/javascript" charset="utf-8">
+	console.log("opts: " + JSON.stringify(<%- opts %>) );
+</script>
+<div id="addChore">
+	<form action="/do_chore" method="post" name="createTask">
+		<label for="choreName">Chore</label>
+		<input type="text" id="choreName" name="chore" autofocus required placeholder="Start typing for autocomplete...">
+		<label for="personName">Person</label>
+		<input type="text" id="personName" name="person" placeholder=""><br/>
+		<label for="timeLabel">Time: </label>
+			<div id= "timeSlider"></div>
+			<input type="text" name="timeLabel" id="timeLabel" value="30m" readonly>
+		<input type="submit" id='choreSubmit' value="Do it!"/>
+	</form>
+</div>
+
+<br/>
+
+<br/>
+<header>
+	<hgroup>
+		<h4><u>Leader Board</u></h4>
+	</hgroup>
+</header>
+<div id="leaderboardDiv" title="Leader Board" class="graph"></div>
+

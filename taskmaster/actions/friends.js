@@ -1,5 +1,6 @@
+var util = require('util');
 var models = require("../models");
-var emailer = require('nodemailer'); 
+var emailer = require('nodemailer');
 emailer.SMTP = { 
 	host: 'smtp.gmail.com', 
 	use_authentication: true,
@@ -25,7 +26,7 @@ var router = function(spec) {
 			console.log("addFriends: user.findone() - " + 
 							JSON.stringify(err) + " : " + 
 							JSON.stringify(userFriend));
-			that.req.flash('error', JSON.stringify(err));
+			!!err && that.req.flash('error', util.inspect(err));
 
 			// If friend isn't already registered, register/email him and move on
 			if (!userFriend) {
@@ -35,7 +36,7 @@ var router = function(spec) {
 				models.User.create( { email: email }, function(err, result) {
 					if (!result) {
 						that.req.flash('error', 'Failed to create your friend in the system');
-						that.req.flash('error', JSON.stringify(err));
+						!!err && that.req.flash('error', util.inspect(err));
 						that.res.redirect('/');
 					}
 					else {
@@ -83,7 +84,7 @@ var router = function(spec) {
 		// Read in all the current friends
 		models.Friend.find( {user_id: this.req.session.user.id},
 												{include: { user: {}, friend: {}}}, function(err, friendResults) {
-			err && that.req.flash('error', JSON.stringify(err));
+			!!err && that.req.flash('error', util.inspect(err));
 
 			filterResults(friendResults);
 			// Read in all friend request that haven't been approved
@@ -91,7 +92,7 @@ var router = function(spec) {
 													 approved: false,
 													 denied: false},
 													{include: { user: {}, friend: {}}}, function(err2, friendResults) {
-				err2 && that.req.flash('error', JSON.stringify(err2));
+				!!err2 && that.req.flash('error', util.inspect(err2));
 
 				filterResults(friendResults);
 
@@ -113,7 +114,7 @@ var router = function(spec) {
 		models.Friend.findOne({
 														user_id: that.req.session.user.id,
 														friend_user_id: userFriend.id}, function(err, result) {
-				err && that.req.flash('error', JSON.stringify(err));
+				!!err && that.req.flash('error', util.inspect(err));
 				if (result && result.id) {
 					that.req.flash('info', "Don't be needy, you already added that friend");
 					that.res.redirect('/friends');
@@ -126,7 +127,7 @@ var router = function(spec) {
 																}, function (err, result) {
 						if (err || !result) {
 							that.req.flash('error', 'Failed to forge the friendship, please try again later');
-							err && that.req.flash('error', JSON.stringify(err));
+							!!err && that.req.flash('error', util.inspect(err));
 							that.res.redirect('/');
 						}
 						else {
@@ -149,7 +150,7 @@ var router = function(spec) {
 		}, function (error, success) {
 			if (!success) {
 				that.req.flash('error', 'Failed to invite friend to join');
-				error && that.req.flash('error', JSON.stringify(error));
+				!!error && that.req.flash('error', util.inspect(error));
 			}
 			else {
 				that.req.flash('info', 'Sent an invite to your friend to join');
@@ -169,14 +170,14 @@ var router = function(spec) {
 								'Friend has sent to rejection-land!');
 	};
 
-	newRouter.updateFriend = function(id, fields, failureMsg, succesMsg) {
+	newRouter.updateFriend = function(id, fields, failureMsg, successMsg) {
 		var that = this;
 
 		// Check that they didn't already create this link
 		models.Friend.findOne({
 				user_id: id,
 				friend_user_id: that.req.session.user.id}, function(err, friend) {
-			err && that.req.flash('error', JSON.stringify(err));
+			!!err && that.req.flash('error', JSON.stringify(err));
 			if (!friend || !friend.id) {
 				that.req.flash('error', "Hmm... friend wasn't requested, are you cheating the system?");
 				that.res.redirect('/friends');
@@ -184,8 +185,8 @@ var router = function(spec) {
 			else {
 				models.Friend.update({ id: friend.id }, fields, function (err, result) {
 					if (err || !result) {
-						that.req.flash('error', failureMsg);
-						that.req.flash('error', JSON.stringify(err));
+						!!failureMsg && that.req.flash('error', failureMsg);
+						!!err && that.req.flash('error', util.inspect(err));
 						that.res.redirect('/friends');
 					}
 					else {
@@ -196,11 +197,11 @@ var router = function(spec) {
 																	approved_at: new Date(),
 																	created_at: new Date()}, function (err, result) {
 							if (err || !result) {
-								that.req.flash('error', failureMsg);
-								that.req.flash('error', JSON.stringify(err));
+								!!failureMsg && that.req.flash('error', failureMsg);
+								!!err && that.req.flash('error', util.inspect(err));
 							}
 							else {
-								that.req.flash('info', succesMsg);
+								that.req.flash('info', successMsg);
 							}
 							that.res.redirect('/friends');
 						});

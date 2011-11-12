@@ -28,11 +28,13 @@ var router = function(spec) {
 				}
 
 				// Read in all the friends for leaderboard stuff
-				models.Friend.find( {}, { include: { user: {},	friend: {} } }, function(err, friendResults) {
+				models.Friend.find( {user_id: that.req.session.user.id}, 
+														{include: { user: {},	friend: {} } }, 
+														function(err, friendResults) {
 					console.log("Dumping friends: " + JSON.stringify(friendResults));
 					for (var i = 0; i < friendResults.length; i++) {
 						friends[i] = friendResults[i].friend.name;
-						userIds.indexOf(friendResults[i].friend.id) && userIds.push(friendResults[i].friend.id);
+						userIds.push(friendResults[i].friend.id);
 					}
 
 					// Now render the page damnit!

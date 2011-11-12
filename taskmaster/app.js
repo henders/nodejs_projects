@@ -1,8 +1,8 @@
-
 /**
  * Module dependencies.
  */
 var express = require('express');
+var fs = require('fs');
 
 var app = module.exports = express.createServer();
 
@@ -34,9 +34,18 @@ app.configure('production', function(){
 });
 
 // Routes
-app.get(/^\/(index)?$/, function(req, res) {
-	var index = require("./actions/index.js");
-	index.route(req, res);
+//app.get(/^\/(index)?$/, function(req, res) {
+//	var index = require("./actions/index.js");
+//	index.route(req, res);
+//});
+
+app.get(/cache.manifest/, function(req, res) {
+	console.log("Cache access");
+	res.header('Content-Type', 'text/cache-manifest');
+	fs.readFile('cache.manifest', function (err, data) {
+	  if (err) throw err;
+		res.send(data);
+	});
 });
 
 app.get('/login', function(req, res) {

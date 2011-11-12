@@ -12,19 +12,6 @@ div#main {
 	background-color: #FFC;
 	padding: 0px;
 }
-h4 {
-	margin: 10px 0 0px auto;
-	padding-left: 5px;
-}
-div#flash_error {
-	border-style: solid;
-	border-color: #F00;
-}
-div#flash_error p{
-	color: #C00;
-}
-div#pie {
-}
 div#leaderboardDiv {
 	width: 300px;
 	height: 200px;
@@ -35,6 +22,12 @@ div#pie p {
 }
 div#addChore {
 	margin: 10px auto;
+}
+#timeSlider {
+	display: inline-table;
+	width: 150px;
+	margin: 5px;
+	height: 10px;
 }
 fieldset {
 	width: 290px;
@@ -58,9 +51,6 @@ input {
 	width: 150px;
 	margin: 5px;
 }
-input[type="range"] {
-	clear: both;
-}
 input.choreSubmit {
 	clear: both;
 	margin: 0px 100px;
@@ -72,7 +62,7 @@ input#friendSubmit {
 	height: 27px;
 }
 input#timeLabel {
-	width:30px;
+	width:38px;
 	background-color:transparent;
 	opacity:0.7;
 }
@@ -145,19 +135,19 @@ nav a:last-child {
 	float: right;
 }
 nav a#home_icon {
-	background-image: url('/images/icon_home.svg');
+	background-image: url('/images/icon_home.png');
 	background-repeat: no-repeat;
 }
 nav a#friends_icon {
-	background-image: url('/images/icon_friends.svg');
+	background-image: url('/images/icon_friends.png');
 	background-repeat: no-repeat;
 }
 nav a#chores_icon {
-	background-image: url('/images/icon_chores_a.svg');
+	background-image: url('/images/icon_chores.png');
 	background-repeat: no-repeat;
 }
 nav a#logout_icon {
-	background-image: url('/images/icon_unlock.svg');
+	background-image: url('/images/icon_unlock.png');
 	background-repeat: no-repeat;
 	background-size:15px 20px;
 }
@@ -165,14 +155,14 @@ a#addFriendButton {
 	margin-top: 10px;
 }
 a#approve {
-	background-image: url('/images/icon_approve.svg');
+	background-image: url('/images/icon_approve.png');
 	background-repeat: no-repeat;
 	background-size:10px 10px;
 	width: 20px;
 	height: 20px;
 }
 a#disapprove {
-	background-image: url('/images/icon_disapprove.svg');
+	background-image: url('/images/icon_disapprove.png');
 	background-repeat: no-repeat;
 	background-size:10px 10px;
 	width: 20px;

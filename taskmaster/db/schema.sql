@@ -9,6 +9,47 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
 
+SET search_path = public, pg_catalog;
+
+ALTER TABLE ONLY public.friends DROP CONSTRAINT friends_user_id_fkey;
+ALTER TABLE ONLY public.friends DROP CONSTRAINT friends_friend_user_id_fkey;
+ALTER TABLE ONLY public.chores DROP CONSTRAINT chores_type_fkey;
+ALTER TABLE ONLY public.chores DROP CONSTRAINT chores_person_fkey;
+DROP INDEX public.users_email_idx;
+DROP INDEX public.name;
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_email_key;
+ALTER TABLE ONLY public.friends DROP CONSTRAINT friends_pkey;
+ALTER TABLE ONLY public.chores DROP CONSTRAINT chores_pkey;
+ALTER TABLE ONLY public.chore_types DROP CONSTRAINT chore_types_pkey;
+ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.chores ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.chore_types ALTER COLUMN id DROP DEFAULT;
+DROP TABLE public.friends;
+DROP SEQUENCE public.users_id_seq;
+DROP TABLE public.users;
+DROP SEQUENCE public.chores_id_seq;
+DROP TABLE public.chores;
+DROP SEQUENCE public.chore_types_id_seq;
+DROP TABLE public.chore_types;
+DROP PROCEDURAL LANGUAGE plpgsql;
+DROP SCHEMA public;
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
 --
 -- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --

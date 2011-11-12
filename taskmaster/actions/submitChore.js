@@ -55,7 +55,7 @@ var router = function(spec) {
 														person: that.req.session.user.id,
 														done_date: new Date(),
 														created_at: new Date(),
-														time_taken: that.req.body.time
+														time_taken: parseInt(that.req.body.timeLabel) // time = format '30m'
 													 }, function(err, result) {
 				if (err || !result) {
 					that.req.flash('error', "Failed to create the chore: " + JSON.stringify(err));
@@ -78,11 +78,11 @@ var router = function(spec) {
 			// refactor chores data for pie chart display
 			for (var i = 0; i < chores.length; i++) {
 				choreData[chores[i].type.name] = choreData[chores[i].type.name] ? 
-				choreData[chores[i].type.name] + 1 : 1;
+																				 choreData[chores[i].type.name] + 1 : 1;
 
 				// change the date/time display of chores
 				dateDone = new Date(chores[i].done_date);
-				chores[i].done_date = date.format(dateDone, '%b %d %H:%I');
+				chores[i].done_date = date.format(dateDone, '%b %d %H:%M');
 				chores[i].points = chores[i].time_taken;
 			}
 			_.each(_.keys(choreData), function(key) {
