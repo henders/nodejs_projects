@@ -27,11 +27,14 @@ app.configure('test', function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+  process.env.DATABASE_URL = "postgres://shane:rattlers@localhost/taskserver-test";
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
+
+var models = require('./models.js');
 
 // Routes
 //app.get(/^\/(index)?$/, function(req, res) {
@@ -48,15 +51,66 @@ app.get(/cache.manifest/, function(req, res) {
 	});
 });
 
-app.get('/login', function(req, res) {
-	var index = require("./actions/login.js");
-	index.route(req, res, true); // isGet = true
+app.post('/login', function(req, res) {
+	var email = req.body.email;
+	console.log("Logging in: " + email);
+		models.User.findOne({ 'email.ilike': email
+												}, function(err, result) {
+			var response = {};
+			if (err) {
+				response.error = "Failed to find this user:" + err.message;
+				console.log(response.error);
+			}
+			// Want to encourage people to enter a name always
+			else if (!result || !result.name || !result.registered) {
+				// register this bad-ass
+				console.log("Redirect to the registration screen");
+				response.error = 'Finish the registration by entering your name';
+				req.session.email = email;
+				response.user = result;
+				response.redirect = '/index.html#registerUserPage';
+			}
+			else {
+				req.session.user = result;
+				req.session.key = Math.random();
+				response.user = req.session.user;
+				response.key = req.session.key;
+				res.send(JSON.stringify(response));
+			}
+		});
 });
 
-app.post('/login', function(req, res) {
-	var index = require("./actions/login.js");
-	index.route(req, res, false); // isGet = false
+// Get list of chore types
+app.get('/chores/types', function(req, res) {
+	// Read in all the current chore types
+	console.log("request choreTypes");
+	models.ChoreType.find( {}, { only: ['name'], order: ['name'] }, function(err, types) {
+		console.log("Error: " + err);
+		console.log("Got chore type request, sending results: " + JSON.stringify(types));
+		res.send(JSON.stringify(types));
+	});
 });
+
+app.get('/friends/list', function(req, res) {
+	// Read in all the friends for leaderboard stuff
+	models.Friend.find( {user_id: req.session.user.id}, 
+		{include: { user: {},	friend: {} } }, 
+		function(err, friendResults) {
+			console.log("Error: " + err);
+			console.log("Dumping friends: " + JSON.stringify(friendResults));
+			res.send(JSON.stringify(friendResults));
+		});
+});
+
+
+
+
+
+
+
+
+
+
 
 app.get('/logout', function(req, res) {
 	req.session.user = undefined;
@@ -72,6 +126,7 @@ app.post('/register_user', function(req, res) {
 	var index = require("./actions/register.js");
 	index.route(req, res, true); // isPost = true
 });
+
 
 app.post('/do_chore', function(req, res) {
 	var submitChore = require("./actions/submitChore.js");

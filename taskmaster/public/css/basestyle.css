@@ -3,15 +3,6 @@
 .ui-widget { 
 	font-size: small;
 }
-div#main {
-	height: 425px;
-	width: 300px;
-	border-style: solid;
-	border-color: #F90;
-	margin: 0px auto;
-	background-color: #FFC;
-	padding: 0px;
-}
 div#leaderboardDiv {
 	width: 300px;
 	height: 200px;
@@ -22,30 +13,6 @@ div#pie p {
 }
 div#addChore {
 	margin: 10px auto;
-}
-#timeSlider {
-	display: inline-table;
-	width: 150px;
-	margin: 5px;
-	height: 10px;
-}
-fieldset {
-	width: 290px;
-	border-style: dashed;
-	border-color: #F90;
-	margin: 10px auto;
-	padding: 0px;
-}
-label {
-	clear: left;
-	float: left;
-	text-align: right;
-	width: 70px;
-	margin: 5px;
-}
-label#timeLabel {
-	clear: both;
-	float: right;
 }
 input {
 	width: 150px;

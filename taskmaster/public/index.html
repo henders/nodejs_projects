@@ -23,10 +23,11 @@
 
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
-  <link rel="stylesheet" href="/css/style.css">
-	<link rel="stylesheet" href="/css/humanity/jquery-ui-1.8.16.custom.css">
-	<link rel="stylesheet" href="/css/basestyle-mvc.css">
-  <!-- end CSS-->
+	<link rel='stylesheet' href="/css/humanity/jquery-ui-1.8.16.custom.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+	<style type="text/css" media="screen">
+	</style>
+	<!-- end CSS-->
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
@@ -39,21 +40,90 @@
 <body>
 
   <div id="container">
-    <header>
-			<nav>
-				<a href="/#" id="home_icon"></a>
-				<a href="/#friends" id="friends_icon"></a>
-				<a href="/#show" id="chores_icon"></a>
-				<a href="/#logout" id="logout_icon"></a>
-			</nav>
-    </header>
 
-    <div id="main" role="main">
+		<div data-role="page" id="loginPage" data-theme="b" >
 
-    </div>
-		
+			<div data-role="header">
+				<h1>Login</h1>
+				<header>
+					<nav>
+						<div data-role="controlgroup" data-type="horizontal" >
+							<a href="/index.html" id="home_icon" data-inline="true" data-role="button"></a>
+							<a href="/friends" id="friends_icon" data-inline="true" data-role="button"></a>
+							<a href="/show" id="chores_icon" data-inline="true" data-role="button"></a>
+							<a href="/logout" id="logout_icon" data-inline="true" data-role="button"></a>
+						</div>
+					</nav>
+				</header>
+			</div><!-- /header -->
+
+			<div data-role="content">
+				<form id="loginForm" accept-charset="utf-8">
+					<input type="email" id="email" name="email" value="" placeholder="Enter email to login...">
+					<input type="submit" id="submit" class="submit" value="Login &rarr;">
+				</form>
+			</div>
+
+			<div data-role="footer">
+				<h4>Page Footer</h4>
+			</div><!-- /footer -->
+		</div>
+
+		<div data-role="page" id="addChorePage" data-theme="b" >
+
+			<div data-role="header">
+				<h1>Add Chore</h1>
+				<header>
+					<nav>
+						<div data-role="controlgroup" data-type="horizontal" >
+							<a href="/#" id="home_icon" data-inline="true" data-role="button"></a>
+							<a href="/#friends" id="friends_icon" data-inline="true" data-role="button"></a>
+							<a href="/#show" id="chores_icon" data-inline="true" data-role="button"></a>
+							<a href="/#logout" id="logout_icon" data-inline="true" data-role="button"></a>
+						</div>
+					</nav>
+				</header>
+			</div><!-- /header -->
+
+			<div data-role="content">
+
+				<div id="addChore">
+					<form action="/do_chore" method="post" name="createTask">
+						<fieldset data-role="controlgroup" data-role="fieldcontain">
+							<label for="choreName">Chore</label>
+							<input type="text" id="choreName" name="chore" autofocus required placeholder="Start typing for autocomplete...">
+						</fieldset>
+						<fieldset data-role="controlgroup"  data-type="horizontal" data-role="fieldcontain">
+							<label for="personName">Person</label>
+							<input type="text" id="personName" name="person" placeholder=""><br/>
+						</fieldset>
+						<fieldset data-role="fieldcontain">
+							<label for="timeSlider">Time: </label>
+							<input type="range" name="timeSlider" id="timeSlider" value="30" min="10" max="120"/>
+						</fieldset>
+						<input type="submit" id='choreSubmit' value="Do it!"/>
+					</form>
+				</div>
+
+				<br/>
+
+				<br/>
+				<header>
+					<hgroup>
+						<h4><u>Leader Board</u></h4>
+					</hgroup>
+				</header>
+				<div id="leaderboardDiv" title="Leader Board" class="graph"></div>
+
+			</div><!-- /content -->
+
+			<div data-role="footer">
+				<h4>Page Footer</h4>
+			</div><!-- /footer -->
+		</div><!-- /page -->
+
 		<footer>
-
+'
     </footer>
   </div> <!--! end of #container -->
 
@@ -61,26 +131,57 @@
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"></script>
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script>
-
+ 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js">  
 
   <!-- scripts concatenated and minified via ant build script-->
   <script defer src="js/plugins.js"></script>
   <script defer src="js/script.js"></script>
   <!-- end scripts-->
 
-  <script src="js/libs/underscore.js"></script>
-  <script src="js/libs/backbone.js"></script>
-	<script src="js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-	<script src="js/mylibs/routes.js"></script>
-	<script src="js/mylibs/view_index.js"></script>
 	<script type="text/javascript" charset="utf-8">
+		// our global object
+		var taskmaster = {};
+
 		$(function() {
 			$('#home_icon').button();
 			$('#friends_icon').button();
 			$('#chores_icon').button();
 			$('#logout_icon').button();
+			$('#submit').button();
+		});
+
+		$('#loginForm').submit(function(event) {
+			event.preventDefault();
+			var email = $('#email').val();
+			console.log("logging in: " + email);
+
+			$.post('/login', {email: email}, function(result) {
+				console.log("Got login result: " + JSON.stringify(result));
+				taskmaster.apikey = result.key;
+
+				// now load choreTypePage
+				$.mobile.changePage($("#addChorePage"));
+			}, "json");
+		});
+
+		// Delay executing the chore stuff until we login
+		$( document ).delegate("#addChorePage", "pagecreate", function() {
+			console.log('Entering page: addChorePage');
+			$.getJSON('/chores/types', function(data) {
+				var types = [];
+				taskmaster.choreTypes = data;
+				$.each(data, function(i) { types.push(data[i].name); });
+				$('#choreName').autocomplete( { source: types } );
+			});
+
+			$.getJSON('/friends/list', function(data) {
+				var friends = [];
+				taskmaster.friends = data;
+				$.each(data, function(i) { friends.push(data[i].friend.name); });
+				$('#personName').autocomplete( { source: friends } );
+			});
 		});
 	</script>
 	
