@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title><%= title %></title>
+ 		<link rel='stylesheet' href="/css/humanity/jquery-ui-1.8.16.custom.css" />
+		<link rel='stylesheet' href='/css/basestyle.css' />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/libs/jquery/jquery-ui-1.8.16.custom.min.js"></script>
+		
+		<script type="text/javascript" data-main="js/main" src="/js/libs/require/require.js"></script>
+
+		<script type="text/javascript" charset="utf-8">
+			$(function() {
+				$('#home_icon').button();
+				$('#friends_icon').button();
+				$('#chores_icon').button();
+				$('#logout_icon').button();
+
+				<% if (flash && (flash.error || flash.info)) { %>
+					$('#messages').dialog({
+							modal: true, 
+							buttons: { 
+								Ok: function() {	
+									$( this ).dialog( "close" ); 
+								}
+							}
+						});
+				<% } %>
+			});
+		</script>
+</head>
+
+<body>
+	<div id="main">
+		<div id="body">
+			<%- body %>
+		</div>
+
+	</div>
+
+	<footer>
+		<nav>
+			<a href="/" id="home_icon"></a>
+			<a href="/friends" id="friends_icon"></a>
+			<a href="/show" id="chores_icon"></a>
+			<a href="/logout" id="logout_icon"></a>
+		</nav>
+	</footer>
+
+</body>
+</html>
+

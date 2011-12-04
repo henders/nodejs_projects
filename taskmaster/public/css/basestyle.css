@@ -1,137 +1,33 @@
 @charset "utf-8";
 /* CSS Document */
-.ui-widget { 
-	font-size: small;
+/*
+.ui-page-active {
+	display: table ! important;
 }
-div#leaderboardDiv {
-	width: 300px;
-	height: 200px;
-}
-div#pie p {
-	font-size: x-small;
-	float: right;
-}
-div#addChore {
-	margin: 10px auto;
-}
-input {
-	width: 150px;
-	margin: 5px;
-}
-input.choreSubmit {
-	clear: both;
-	margin: 0px 100px;
-	width:100px;
-	height:27px;
-}
-input#friendSubmit {
-	width: 40px;
-	height: 27px;
-}
-input#timeLabel {
-	width:38px;
-	background-color:transparent;
-	opacity:0.7;
-}
-div.logindiv {
-	margin: 100px auto;
-	width: 200px;
-	padding: 20px;
-	height: 100px;
-}
-div.logindiv input {
-	display: block;
-	margin: 20px auto;
-}
-
-div.chorePie {
-	width: 250px;
-	height: 150px;
-	margin: 0 auto;
-}
-
-div#chores {
-	height: 240px;
-	width: 100%;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-table#chores, table#leaderboard {
-	border-width: medium;
-	border-spacing: 2px;
-	border-style: ridge;
-	border-color: #0084d1;
-	border-collapse: collapse;
-	margin: auto 2px 0 2px;
-	width: 296px;
-}
-table#chores th, table#leaderboard th {
-	text-align: left;
-	border-width: 1px;
-	padding: 1px;
-	border-style: inset;
-	border-color: gray;
-	-moz-border-radius: ;
-}
-table#chores td, table#leaderboard td {
-	border-width: 1px;
-	padding: 1px;
-	border-style: inset;
-	border-color: gray;
-	-moz-border-radius: ;
-}
-table#friendAll, table#friendRequests, table#friendPending{
-	width: 100%;
-}
-div#body {
-	height: 100%;
+.header {
+	display: table-row;
 }
 nav {
-	margin: 0 auto;
-	width: 180px;
+	margin-left:auto;
+	margin-right:auto;
 }
-footer {
-	margin-bottom: 0;
+.ui-content {
+	display: table-cell;
+	vertical-align: middle;
+	height: 100%;
+	width: 100%
 }
-nav a {
-	background-size:20px 20px;
-	width: 30px;
-	height: 30px;
+*/
+.ui-autocomplete {
+	z-index: 500 ! important;
 }
-nav a:last-child {
-	float: right;
+#chorePie {
+	height: 240px;
+	width: 90%;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
-nav a#home_icon {
-	background-image: url('/images/icon_home.png');
-	background-repeat: no-repeat;
-}
-nav a#friends_icon {
-	background-image: url('/images/icon_friends.png');
-	background-repeat: no-repeat;
-}
-nav a#chores_icon {
-	background-image: url('/images/icon_chores.png');
-	background-repeat: no-repeat;
-}
-nav a#logout_icon {
-	background-image: url('/images/icon_unlock.png');
-	background-repeat: no-repeat;
-	background-size:15px 20px;
-}
-a#addFriendButton {
-	margin-top: 10px;
-}
-a#approve {
-	background-image: url('/images/icon_approve.png');
-	background-repeat: no-repeat;
-	background-size:10px 10px;
-	width: 20px;
-	height: 20px;
-}
-a#disapprove {
-	background-image: url('/images/icon_disapprove.png');
-	background-repeat: no-repeat;
-	background-size:10px 10px;
-	width: 20px;
-	height: 20px;
+.ui-content .ui-listview {
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
