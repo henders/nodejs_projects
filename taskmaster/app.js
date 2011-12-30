@@ -20,7 +20,6 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-  require.paths.unshift(__dirname + '/.');
 });
 
 app.configure('test', function(){
@@ -112,29 +111,30 @@ app.get(/cache.manifest/, function(req, res) {
 app.post('/login', function(req, res) {
 	var email = req.body.email;
 	console.log("Logging in: " + email);
-		models.User.findOne({ 'email.ilike': email
-												}, function(err, result) {
-			var response = {};
-			if (err) {
-				response.error = "Failed to find this user:" + err.message;
-				console.log(response.error);
-			}
-			// Want to encourage people to enter a name always
-			else if (!result || !result.name || !result.registered) {
-				// register this bad-ass
-				console.log("Redirect to the registration screen");
-				response.error = 'Finish the registration by entering your name';
-				req.session.email = email;
-				response.user = result;
-			}
-			else {
-				req.session.user = result;
-				req.session.key = result.privatekey;
-				response.user = req.session.user;
-				response.privatekey = req.session.key;
-			}
-			res.send(JSON.stringify(response));
-		});
+	models.User.find({ 'email.ilike': email
+											}, {single:true}, function(err, user) {
+		var response = {};
+		if (err) {
+			response.error = "Failed to find this user:" + err.message;
+			console.log(response.error);
+		}
+		// Want to encourage people to enter a name always
+		else if (!user || !user.name || !user.registered) {
+			// register this bad-ass
+			console.log("Redirect to the registration screen:" + JSON.stringify(user));
+			response.error = 'Finish the registration by entering your name';
+			req.session.email = email;
+			response.user = user;
+		}
+		else {
+			req.session.user = user;
+			req.session.key = user.privatekey;
+			response.user = req.session.user;
+			response.privatekey = req.session.key;
+		}
+		console.log('Logged in: sending - ' + JSON.stringify(response));
+		res.send(JSON.stringify(response));
+	});
 });
 
 // Get list of chore types
@@ -149,7 +149,8 @@ app.get('/chores/types', function(req, res) {
 			models.ChoreType.find( {}, { only: ['name'], order: ['name'] }, function(err, types) {
 				if (err) console.log("Error: " + err);
 				console.log("Got chore type request, sending results: " + JSON.stringify(types));
-				res.send(JSON.stringify(types));
+				console.log('Chore Types: sending - ' + JSON.stringify(types.rows));
+				res.send(JSON.stringify(types.rows));
 			});
 		}
 	} catch (e) {
@@ -165,12 +166,11 @@ app.get('/friends/list', function(req, res) {
 			// Read in all the friends for leaderboard stuff
 			var params = url.parse(req.url, true).query;
 			console.log("request friend list");
-			models.Friend.find( {user_id: req.session.user.id}, 
-				{include: { user: {},	friend: {} } }, 
+			models.Friend.getFriends(req.session.user.id, 
 				function(err, friendResults) {
 					if (err) console.log("Error: " + err);
-					console.log("Dumping friends: " + JSON.stringify(friendResults));
-					res.send(JSON.stringify(friendResults));
+					console.log("Dumping friends: " + JSON.stringify(friendResults.rows));
+					res.send(JSON.stringify(friendResults.rows));
 				}
 			);
 		}

@@ -3,7 +3,7 @@
   , "version": "0.0.2"
   , "private": true
   , "dependencies": {
-      "express": "2.4.3"
+      "express": ">= 2.4.3"
     , "ejs": ">= 0.0.1"
     , "pg": ">=0.5.3"
     , "FastLegS": ">=0.1.0"
@@ -12,6 +12,5 @@
 		, "datetime": ">=0.0.3"
 		, "soda": ">=0.2.4"
 		, "expresso": ">=0.8.1"
-		, "underscore.string": ">=1.1.6"
   }
 }

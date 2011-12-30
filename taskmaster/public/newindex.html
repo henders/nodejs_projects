@@ -23,8 +23,8 @@
 
   <!-- CSS: implied media=all -->
 	<!-- CSS concatenated and minified via ant build script-->
-	<link rel="stylesheet" href="/css/jquery.mobile-1.0.css" />
-	<link rel='stylesheet' href="/css/humanity/jquery-ui-1.8.16.custom.css" />
+	<link rel='stylesheet' href="/css/humanity/jquery-ui-1.8.16.custom.css" /> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.css" />
 	<link rel='stylesheet' href="/css/basestyle.css" />
 	<!-- end CSS-->
 
@@ -38,28 +38,28 @@
 
 <body> 
 	<div id="container">
-		<div data-role="page" id="loginPage" data-theme="a" >
+		<div data-role="page" id="loginPage">
 			<div data-role="header" data-position="fixed" data-title="Login"><h3>Login</h3></div>
 			<div data-role="content"></div>
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed" data-theme="a"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
 		</div>
 
-		<div data-role="page" id="addChorePage" data-theme="a" >
+		<div data-role="page" id="addChorePage">
 			<div data-role="header" data-position="fixed" data-title="Login"><h3>Add Chore</h3></div>
 			<div data-role="content"></div>
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed" data-theme="a"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
 		</div>
 
-		<div data-role="page" id="choresPage" data-theme="a" >
+		<div data-role="page" id="choresPage">
 			<div data-role="header" data-position="fixed" data-title="Login"><h3>Add Chore</h3></div>
 			<div data-role="content"></div>
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed" data-theme="a"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
 		</div>
 
-		<div data-role="page" id="friendsPage" data-theme="a" >
+		<div data-role="page" id="friendsPage">
 			<div data-role="header" data-position="fixed" data-title="Login"><h3>Add Chore</h3></div>
 			<div data-role="content"></div>
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed" data-theme="a"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
 		</div>
 	</div> <!--! end of #container -->
 
@@ -71,11 +71,14 @@
 	<script type="text/javascript" src="/js/libs/jquery.cookie-1.0.js"></script>
 	<script type="text/javascript" src="/js/libs/underscore-min.js"></script>
 	<script type="text/javascript" src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-	<script type="text/javascript" src="/js/libs/jquery.mobile-1.0.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/latest/jquery.mobile.js"></script>
 	<script type="text/javascript" src="/js/libs/crypto-min.js"></script>
 	<script type="text/javascript" src="/js/libs/crypto-sha256-hmac.js"></script>
 	<script type="text/javascript" src="/js/libs/flot/jquery.flot.min.js"></script>
 	<script type="text/javascript" src="/js/libs/flot/jquery.flot.pie.min.js"></script>
+ 	<script type="text/javascript" src="/js/utils.js"></script>
+ 	<script type="text/javascript" src="/js/login.js"></script>
+ 	<script type="text/javascript" src="/js/addchores.js"></script>
 
   <!-- scripts concatenated and minified via ant build script-->
   <script defer src="js/plugins.js"></script>
@@ -87,10 +90,10 @@
 			<nav>
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#addChorePage" id="home_icon">Add Chore</a></li>
-						<li><a href="#choresPage" id="chores_icon">View Chores</a></li>
-						<li><a href="#friendsPage" id="friends_icon">Friends</a></li>
-						<li><a href="#loginPage" id="logout_icon">Logout</a></li>
+						<li><a href="/newindex.html#addChorePage" id="home_icon">Add Chore</a></li>
+						<li><a href="/newindex.html#choresPage" id="chores_icon">View Chores</a></li>
+						<li><a href="/newindex.html#friendsPage" id="friends_icon">Friends</a></li>
+						<li><a href="/newindex.html#loginPage" id="logout_icon">Logout</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -137,7 +140,7 @@
 				console.log('Load was performed: ' + url);
 				if (loadItNow) {
 					$('div.ui-page-active nav ' + navButton).addClass('ui-btn-active ui-state-persist');
-					$.mobile.changePage( $page, {theme: "a"} );
+					$.mobile.changePage( $page );
 				}
 				else {
 //					$page.live( 'pageshow',function(event) {

@@ -1,3 +1,5 @@
+console.log('setting form override');
+function loginPageInit() {
 	$('#loginForm').submit(function(e) {
 		var email = $('#email').val();
 		console.log("logging in: " + email);
@@ -14,4 +16,4 @@
 
 		return false;
 	});
-
+};

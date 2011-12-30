@@ -1,31 +1,10 @@
+				<form action="/login" method="post" name="loginForm" id="loginForm" accept-charset="utf-8">
+					<div class="ui-bar ui-grid-a">
+						<div class="ui-block-a"><input type="email" id="email" name="email" value="" placeholder="Enter email to login..."></div>
+						<div class="ui-block-b"><button type="submit" id="submit">Login &rarr;</button></div>
+					</div>
+				</form>
 
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<form action="/login" method="post" name="loginForm" id="loginForm" accept-charset="utf-8">
-		<div class="ui-bar ui-grid-a">
-			<div class="ui-block-a"><input type="email" id="email" name="email" value="" placeholder="Enter email to login..."></div>
-			<div class="ui-block-b"><button type="submit" id="submit">Login &rarr;</button></div>
-		</div>
-	</form>
-
-<script type="text/javascript" charset="utf-8">
-	$('#loginForm').submit(function(e) {
-		var email = $('#email').val();
-		console.log("logging in: " + email);
-
-		$.post('/login', {email: email}, function(result) {
-			console.log("Got login result: " + JSON.stringify(result));
-			taskmaster.user = result.user;
-			console.log('setting cookie');
-			$.cookie('taskmaster', JSON.stringify(taskmaster));
-			// now load addChorePage
-			console.log('clicking home icon');
-			$('#home_icon').click();
-		}, "json");
-
-		return false;
-	});
-
-</script>
+				<script type="text/javascript" charset="utf-8">
+					loginPageInit();
+				</script>

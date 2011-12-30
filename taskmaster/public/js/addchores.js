@@ -18,7 +18,7 @@
 
 	// Delay executing the chore stuff until we login
 	$( '#addChorePage' ).live( 'pageshow', function(event) {
-		console.log('Entering page: addChorePage: ' + JSON.stringify(event));
+		console.log('Entering page: addChorePage');
 
 		function createLeaderBoard() {
 			var leaderBoardData = [];
@@ -83,6 +83,7 @@
 		};			
 		var sig = createSignature('/chores/types', params);
 		$.getJSON('/chores/types', {signature: sig, param: JSON.stringify(params)}, function(data) {
+			console.log('chores/types result: ' + JSON.stringify(data));
 			if (data.error) {
 				console.log('Encountered error: ' + data.error);
 				showMsg(data.error);
@@ -100,16 +101,16 @@
 		};			
 		var sig = createSignature('/friends/list', params);
 		$.getJSON('/friends/list', {signature: sig, param: JSON.stringify(params)}, function(data) {
+			console.log('friends/list result: ' + JSON.stringify(data));
 			if (data.error) {
 				console.log('Encountered error: ' + data.error);
 				showMsg(data.error);
 			}
 			else {
-				var friends = [taskmaster.user.name];
-				taskmaster.friends = data;
-				$.each(data, function(i) { friends.push(data[i].friend.name); });
-				$('#personName').autocomplete( { source: friends }, { selectFirst: true });
-				$('#personName').val(taskmaster.user.name);
+				$.each(data, function(i) { 
+					$('#personName').append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+				});
+				$('#personOption').attr('value', taskmaster.user.id);
 				createLeaderBoard();
 			}
 		});

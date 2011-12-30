@@ -105,15 +105,16 @@ var getUserPoints = function(id, res) {
 	var returnObject = { name: '', points: 0 };
 
 	console.log("Finding points for user: " + id);
-	models.User.findOne({id: id}, function(err, user) {
+	models.User.find({id: id}, {single: true}, function(err, user) {
+		console.log('getuserPoints: ' + JSON.stringify(user));
 		returnObject.id = user.id;	
 		returnObject.name = user.name;
 
 		// Read all the current chores for the user
 		models.Chore.find({person: id}, { include: { person: {}}}, function(err, chores) {
 			// refactor chores data for pie chart display
-			for (var i = 0; i < chores.length; i++) {
-				returnObject.points += chores[i].time_taken;
+			for (var i = 0; i < chores.rowCount; i++) {
+				returnObject.points += chores.rows[i].time_taken;
 			}
 			console.log("User Points: " + JSON.stringify(returnObject));
 			res.json(returnObject);
