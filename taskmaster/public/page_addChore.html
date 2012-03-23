@@ -1,7 +1,7 @@
 				<div id="addChore">
 					<form action="/do_chore" id="createTaskForm" method="post" name="createTask">
-						<fieldset data-role="controlgroup" data-role="fieldcontain">
-							<label for="choreName">Chore</label>
+						<fieldset  data-role="fieldcontain">
+							<label for="choreName">What was done?</label>
 							<input type="text" id="choreName" name="chore" autofocus required placeholder="Start typing for autocomplete...">
 						</fieldset>
 						<fieldset data-role="fieldcontain">
@@ -11,7 +11,7 @@
 							</select>
 						</fieldset>
 						<fieldset data-role="fieldcontain">
-							<label for="timeSlider">Time: </label>
+							<label for="timeSlider">Time (in minutes): </label>
 							<input type="range" name="timeSlider" id="timeSlider" value="30" min="10" max="120"/>
 						</fieldset>
 						<input type="submit" id='choreSubmit' value="Do it!"/>
@@ -29,3 +29,6 @@
 				<div id="leaderboardDiv" title="Leader Board" class="graph"></div>
 
 
+				<script type="text/javascript" charset="utf-8">
+					addChorePageInit();
+				</script>

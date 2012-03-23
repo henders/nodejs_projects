@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <title>Testing voice recog</title>
+</head>
+<body>
+    <input type="text" x-webkit-speech x-webkit-grammar="http://task-server2.herokuapp.com/grammar.grxml">
+    <script type="text/javascript" charset="utf-8">
+        function inputChange(e) {
+            if (e.results) { // e.type == 'webkitspeechchange'
+                for (var i = 0, result; result = e.results[i]; ++i) {
+                    console.log(result.utterance, result.confidence);
+                }
+                console.log('Best result: ' + this.value);
+            }
+        }
+
+        var input = document.querySelector('[x-webkit-speech]');
+        input.addEventListener('change', inputChange, false);
+        input.addEventListener('webkitspeechchange', inputChange, false);
+    </script>
+</body>
+</html>

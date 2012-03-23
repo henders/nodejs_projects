@@ -23,9 +23,10 @@
 
   <!-- CSS: implied media=all -->
 	<!-- CSS concatenated and minified via ant build script-->
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.css" />
 	<link rel='stylesheet' href="/css/humanity/jquery-ui-1.8.16.custom.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.css" />
 	<link rel='stylesheet' href="/css/basestyle.css" />
+	<link rel='stylesheet' href="/css/jquery.jqplot.min.css" />
 	<!-- end CSS-->
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
@@ -37,168 +38,122 @@
 </head>
 
 <body> 
-	<div id="container" data-theme="b" >
-	
-		<div data-role="page" id="loginPage" >
-
+	<div id="container">
+		<div data-role="page" id="loginPage">
 			<div data-role="header" data-position="fixed" data-title="Login"><h3>Login</h3></div>
-
-			<div data-role="content">
-				<form action="/login" method="post" name="loginForm" id="loginForm" accept-charset="utf-8">
-					<div class="ui-bar ui-grid-a">
-						<div class="ui-block-a"><input type="email" id="email" name="email" value="" placeholder="Enter email to login..."></div>
-						<div class="ui-block-b"><button type="submit" id="submit">Login &rarr;</button></div>
-					</div>
-				</form>
-			</div>
-
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed">
-				<footer>
-				<nav>
-				<div data-role="navbar">
-					<ul>
-						<li><a href="#addChorePage" id="home_icon">Add Chore</a></li>
-						<li><a href="#choresPage" id="chores_icon">View Chores</a></li>
-						<li><a href="#friendsPage" id="friends_icon">Friends</a></li>
-						<li><a href="#loginPage" id="logout_icon">Logout</a></li>
-					</ul>
-				</div>
-				</nav>
-				</footer>
-			</div>
+			<div data-role="content"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
 		</div>
 
 		<div data-role="page" id="addChorePage">
-
-			<div data-role="header" data-position="fixed" data-title="Add Chore"><h3>Add Chore</h3></div>
-
-			<div data-role="content">
-				<div id="addChore">
-					<form action="/do_chore" id="createTaskForm" method="post" name="createTask">
-						<fieldset data-role="controlgroup" data-role="fieldcontain">
-							<label for="choreName">Chore</label>
-							<input type="text" id="choreName" name="chore" autofocus required placeholder="Start typing for autocomplete...">
-						</fieldset>
-						<fieldset data-role="controlgroup"  data-type="horizontal" data-role="fieldcontain">
-							<label for="personName">Person</label>
-							<input type="text" id="personName" name="person" placeholder=""><br/>
-						</fieldset>
-						<fieldset data-role="fieldcontain">
-							<label for="timeSlider">Time: </label>
-							<input type="range" name="timeSlider" id="timeSlider" value="30" min="10" max="120"/>
-						</fieldset>
-						<input type="submit" id='choreSubmit' value="Do it!"/>
-					</form>
-				</div>
-
-				<br/>
-
-				<br/>
-				<header>
-					<hgroup>
-						<h4><u>Leader Board</u></h4>
-					</hgroup>
-				</header>
-				<div id="leaderboardDiv" title="Leader Board" class="graph"></div>
-
-			</div><!-- /content -->
-
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed">
-				<footer>
-				<nav>
-				<div data-role="navbar">
-					<ul>
-						<li><a href="#addChorePage" id="home_icon" class="ui-btn-active ui-state-persist">Add Chore</a></li>
-						<li><a href="#choresPage" id="chores_icon">View Chores</a></li>
-						<li><a href="#friendsPage" id="friends_icon">Friends</a></li>
-						<li><a href="#loginPage" id="logout_icon">Logout</a></li>
-					</ul>
-				</div>
-				</nav>
-				</footer>
-			</div>
-		</div><!-- /page -->
+			<div data-role="header" data-position="fixed" data-title="Login"><h3>Add Chore</h3></div>
+			<div data-role="content"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
+		</div>
 
 		<div data-role="page" id="choresPage">
-
-			<div data-role="header" data-position="fixed" data-title="Login"><h3>View Chore</h3></div>
-
-			<div data-role="content">
-				<div id="pie">
-					<div id="chorePie" class="graph"></div>
-				</div>
-
-				<ul data-role="listview" id="choreList"></ul>
-			</div><!-- /content -->
-
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed">
-				<footer>
-				<nav>
-				<div data-role="navbar">
-					<ul>
-						<li><a href="#addChorePage" id="home_icon">Add Chore</a></li>
-						<li><a href="#choresPage" id="chores_icon">View Chores</a></li>
-						<li><a href="#friendsPage" id="friends_icon">Friends</a></li>
-						<li><a href="#loginPage" id="logout_icon">Logout</a></li>
-					</ul>
-				</div>
-				</nav>
-				</footer>
-			</div>
-		</div><!-- /page -->
-
+			<div data-role="header" data-position="fixed" data-title="Login"><h3>Chores</h3></div>
+			<div data-role="content"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
+		</div>
 
 		<div data-role="page" id="friendsPage">
-
 			<div data-role="header" data-position="fixed" data-title="Login"><h3>Friends</h3></div>
-
-			<div data-role="content">
-			</div><!-- /content -->
-
-			<div data-role="footer" data-id="footer" class="footer" data-position="fixed">
-				<footer>
-				<nav>
-				<div data-role="navbar">
-					<ul>
-						<li><a href="#addChorePage" id="home_icon">Add Chore</a></li>
-						<li><a href="#choresPage" id="chores_icon">View Chores</a></li>
-						<li><a href="#friendsPage" id="friends_icon">Friends</a></li>
-						<li><a href="#loginPage" id="logout_icon">Logout</a></li>
-					</ul>
-				</div>
-				</nav>
-				</footer>
-			</div>
-		</div><!-- /page -->
-	
+			<div data-role="content"></div>
+			<div data-role="footer" data-id="footer" class="footer" data-position="fixed"></div>
+		</div>
 	</div> <!--! end of #container -->
 
 
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
- 	<script type="text/javascript" src="/js/libs/jquery-1.6.4.min.js"></script>
+ 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" src="/js/libs/jquery.cookie-1.0.js"></script>
 	<script type="text/javascript" src="/js/libs/underscore-min.js"></script>
 	<script type="text/javascript" src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/mobile/latest/jquery.mobile.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.js"></script>
 	<script type="text/javascript" src="/js/libs/crypto-min.js"></script>
 	<script type="text/javascript" src="/js/libs/crypto-sha256-hmac.js"></script>
 	<script type="text/javascript" src="/js/libs/flot/jquery.flot.min.js"></script>
 	<script type="text/javascript" src="/js/libs/flot/jquery.flot.pie.min.js"></script>
-
+ 	<script type="text/javascript" src="/js/jquery.jqplot.min.js"></script>
+ 	<script type="text/javascript" src="/js/utils.js"></script>
  	<script type="text/javascript" src="/js/login.js"></script>
  	<script type="text/javascript" src="/js/addchores.js"></script>
+ 	<script type="text/javascript" src="/js/chores.js"></script>
 
   <!-- scripts concatenated and minified via ant build script-->
   <script defer src="js/plugins.js"></script>
   <script defer src="js/script.js"></script>
   <!-- end scripts-->
 
+	<script type="text/template" id="header_template">
+		<footer>
+			<nav>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="/newindex.html#addChorePage" id="home_icon">Add Chore</a></li>
+						<li><a href="/newindex.html#choresPage" id="chores_icon">View Chores</a></li>
+						<li><a href="/newindex.html#friendsPage" id="friends_icon">Friends</a></li>
+						<li><a href="/newindex.html#loginPage" id="logout_icon">Logout</a></li>
+					</ul>
+				</div>
+			</nav>
+		</footer>
+	</script>
+
 	<script type="text/javascript" charset="utf-8">
 		// our global object
 		var taskmaster = JSON.parse($.cookie('taskmaster')) || {};
-		$.get('/js/login.js');
+
+		function createSignature(path, paramObject) {
+			var now = new Date();
+			paramObject.timestamp = now.getTime();
+			// Create query string from object
+			var queryString = "?";
+			var keys = _.keys(paramObject);
+			console.log("keys = " + JSON.stringify(keys));
+			keys.sort();
+			_.each(keys, function(key) { queryString += key + "=" + paramObject[key] + "&"; });
+
+			var sig = path + queryString;
+			console.log('hashing sig: ' + sig);
+			return Crypto.HMAC(Crypto.SHA256, sig, taskmaster.user.secretkey);
+		}
+
+		function showMsg(message) {
+			//show error message
+			$( "<div class='ui-loader ui-overlay-shadow ui-body-e ui-corner-all'><h1>"+ message +"</h1></div>" )
+			.css({ "display": "block", "opacity": 0.96, "topq": $( window ).scrollTop() + 100 })
+			.appendTo( $.mobile.pageContainer )
+			.delay( 800 )
+			.fadeOut( 1200, function() {
+				$( this ).remove();
+			});
+		}
+
+		function loadPage(url, $page, navButton, loadItNow) {
+			$.get(url, function(data) {
+				var $content = $page.children( ":jqmData(role=content)" );
+				var $footer = $page.children( ":jqmData(role=footer)" );
+				$content.html(data).trigger('create');
+				$footer.html($('#header_template').html()).trigger('create');
+				// initialize the jquery mobile page
+				console.log('Load was performed: ' + url);
+				if (loadItNow) {
+					$('div.ui-page-active nav ' + navButton).addClass('ui-btn-active ui-state-persist');
+					$.mobile.changePage( $page );
+				}
+			});
+		}
+
+		console.log('loading pages....');
+		loadPage("/page_login.html", $('#loginPage'), '#home_icon', true);
+		loadPage("/page_addChore.html", $('#addChorePage'), '#home_icon', false);
+		loadPage("/page_chores.html", $('#choresPage'), '#chores_icon', false);
+//		loadPage("/friendsPage.html", $('#friendsPage'), '#friends_icon');
+
 	</script>
 
 
@@ -220,3 +175,4 @@
   
 </body>
 </html>
+

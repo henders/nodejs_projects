@@ -1,17 +1,20 @@
 var models = require("../models");
 var _ = require('underscore')._;
 var date = require('datetime');
+var sanitize = require('validator').sanitize;
 
 
 var postChore = function(params, res) {
-	var choreName = params.choreType;
+	var choreName = sanitize(params.choreType).xss();
 
+	params.user = sanitize(params.user).toInt();
+	console.log('Posting Chore: ' + JSON.stringify(params));
 	// Check if the chore type exists
 	models.ChoreType.find({'name.like': choreName}, function(err, result) {
 		if (err || !result.length) {
 			// Doesn't exist so create it!
-			models.ChoreType.create({name: choreName, 
-				created_at: new Date()
+			models.ChoreType.create({name: sanitize(choreName).xss(), 
+				created_at: new Date(), user_id: 1
 			}, function(err2, result2) {
 				if (err2 || !result2.rowCount) {
 					var apiResponse = {};
@@ -21,8 +24,8 @@ var postChore = function(params, res) {
 					res.send(apiResponse);
 				}
 				else {
-					console.log("Created new chore type: " + choreName);
-					params.choreTypeDB = result2.rows[0];
+					console.log("Created new chore type: " + JSON.stringify(result2));
+					params.choreTypeId = result2.rows[0].id;
 					createChore(params, res);
 				}
 			});
@@ -37,8 +40,8 @@ var postChore = function(params, res) {
 
 var createChore = function(params, res) {
 	// We should now have the choretype and person (through session) info
-	models.Chore.create( {type: params.choreTypeDB.id,
-		person: params.user.id,
+	models.Chore.create( {type: params.choreTypeId,
+		person: params.user,
 		done_date: new Date(),
 		created_at: new Date(),
 		time_taken: params.time
@@ -65,12 +68,12 @@ var getChores = function(params, res) {
 	var apiResponse = {};
 
 	// Read all the current chores
-	models.Chore.find({person: params.user.id}, { 
+	models.Chore.find({person: params.user}, { 
 		include: {
 			type: {},
 			person: {}
 		},
-		order: ['-done_date']
+		order: ['done_date.descending']
 	}, function(err, chores) {
 		if (err) {
 			apiResponse.success = false;
