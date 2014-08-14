@@ -4,8 +4,8 @@ var emailer = require('nodemailer');
 emailer.SMTP = { 
 	host: 'smtp.gmail.com', 
 	use_authentication: true,
-	user: 'henders@gmail.com',
-	pass: 'FuckWork!',
+	user: '*****@gmail.com',
+	pass: '********',
 	ssl: true,
 	port: 465
 };
